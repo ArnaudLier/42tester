@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 13:54:50 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 14:32:06 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,7 @@ void	test_strncmp(void)
 	const t_scntt	test_cases[] = {
 		{2, "bonjour", "bo"},
 		{8, "hihihihi", ""},
+		{SIZE_MAX, "0", "0"},
 	};
 	size_t			count;
 	size_t			i;
@@ -414,6 +415,7 @@ void	test_strnstr(void)
 	const t_snstt	test_cases[] = {
 		{"bonjour", "bo", 2},
 		{"", "", 0},
+		{"", "", SIZE_MAX},
 		{"bye", "bye", 0},
 		{"hihihihi", "", 8},
 		{"hello", "hello", 5},
