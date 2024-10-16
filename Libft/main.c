@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 15:08:54 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 19:06:48 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,6 +356,7 @@ void	test_memchr(void)
 {
 	const t_mchtt	test_cases[] = {
 		{"bonjour", 'b', 7},
+		{"aaabbbaaa", 'b', 9},
 		{"\0\0\0", '\0', 4},
 	};
 	size_t			count;
