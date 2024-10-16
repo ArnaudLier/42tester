@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 11:44:06 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 13:40:53 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -613,6 +613,8 @@ void	test_split(void)
 	const t_spltc	test_cases[] = {
 		{"b o n", ' ', {"b", "o", "n", NULL}},
 		{"   b   o   n   ", ' ', {"b", "o", "n", NULL}},
+		{"bonjour", ' ', {"bonjour", NULL, NULL, NULL}},
+		{"hello world", '\0', {"hello world", NULL, NULL, NULL}},
 	};
 	size_t			count;
 	size_t			i;
