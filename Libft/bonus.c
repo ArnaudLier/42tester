@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 09:49:43 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 13:41:33 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 19:25:14 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,11 @@ void	test_lstlast(void)
 		exit(EXIT_FAILURE);
 	}
 	ft_lstclear(&lst, NULL);
+	if (ft_lstlast(NULL) != NULL)
+	{
+		fprintf(stderr, "does not handle NULL input");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	test_lstadd_back(void)
