@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 13:40:53 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 13:54:50 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include <assert.h>
 #include <limits.h>
@@ -475,12 +476,41 @@ void	test_atoi(void)
 
 void	test_calloc(void)
 {
-	char		*result;
+	uint8_t	*result;
+	size_t	nmemb;
+	size_t	size;
+	size_t	s;
+	size_t	i;
 
 	printf("Testing Project Libft: ft_calloc.\n");
-	result = ft_calloc(10, 10);
+	nmemb = 10;
+	size = 10;
+	result = ft_calloc(nmemb, size);
+	if (result == NULL)
+	{
+		fprintf(stderr, "returned NULL while it shouldn't have.\n");
+		exit(EXIT_FAILURE);
+	}
+	s = nmemb * size;
+	i = 0;
+	while (i < s)
+	{
+		if (result[i] != '\0')
+		{
+			fprintf(stderr, "memory was not initialized to 0.\n");
+			free(result);
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+	free(result);
+	result = ft_calloc(SIZE_MAX, SIZE_MAX);
 	if (result != NULL)
+	{
+		fprintf(stderr, "did not return NULL on overflow.\n");
 		free(result);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	test_strdup(void)
