@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 14:32:06 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 14:42:01 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,7 +445,7 @@ void	test_strnstr(void)
 
 void	test_atoi(void)
 {
-	const char	*test_values[8];
+	const char	*test_values[9];
 	size_t		count;
 	size_t		i;
 	int			libc_result;
@@ -459,6 +459,7 @@ void	test_atoi(void)
 	test_values[5] = "-2147483648";
 	test_values[6] = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 	test_values[7] = "0";
+	test_values[8] = "9e";
 	count = sizeof(test_values) / sizeof(test_values[0]);
 	i = 0;
 	printf("Testing Project Libft: ft_atoi.\n");
