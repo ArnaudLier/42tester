@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 09:49:43 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 11:59:39 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 13:41:33 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ void	test_lstadd_back(void)
 		ft_lstclear(&lst, NULL);
 		exit(EXIT_FAILURE);
 	}
+	ft_lstclear(&lst, NULL);
 }
 
 void	test_lstdelone(void)
