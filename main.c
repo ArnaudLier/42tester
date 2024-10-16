@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 14:42:01 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 14:52:00 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -543,6 +543,7 @@ void	test_substr(void)
 {
 	const t_sstt	test_cases[] = {
 		{1, 2, "bonjour", "on"},
+		{1, SIZE_MAX, "bonjour le monde", "onjour le monde"},
 		{0, 0, "", ""},
 	};
 	size_t			count;
