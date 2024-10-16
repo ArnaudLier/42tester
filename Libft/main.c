@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 19:06:48 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/16 19:18:15 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -544,6 +544,7 @@ void	test_substr(void)
 {
 	const t_sstt	test_cases[] = {
 		{1, 2, "bonjour", "on"},
+		{UINT_MAX, 2, "bonjour", NULL},
 		{1, SIZE_MAX, "bonjour le monde", "onjour le monde"},
 		{0, 0, "", ""},
 	};
@@ -558,11 +559,24 @@ void	test_substr(void)
 	while (i < count)
 	{
 		result = ft_substr(test_cases[i].src, test_cases[i].start, test_cases[i].len);
+		if (test_cases[i].result == NULL)
+		{
+			if (result != NULL)
+			{
+				fprintf(stderr, "TC%zu: should have returned NULL because of incorrect offset.\n", i);
+				free(result);
+				exit(EXIT_FAILURE);
+			}
+			i++;
+			continue ;
+		} else if (result == NULL) {
+			fprintf(stderr, "TC%zu: should not have returned NULL.\n", i);
+			exit(EXIT_FAILURE);
+		}
 		comparison = strcmp(result, test_cases[i].result);
 		if (comparison)
 		{
-			fprintf(stderr, "for test case %zu\n", i);
-			fprintf(stderr, "unexpected comparison result: %d", comparison);
+			fprintf(stderr, "TC%zu: unexpected comparison result: %d", i, comparison);
 			free(result);
 			exit(EXIT_FAILURE);
 		}
