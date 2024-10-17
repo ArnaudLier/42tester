@@ -634,6 +634,7 @@ void	test_strtrim(void)
 		{"    \t\v hi", " \t\v", "hi"},
 		{"    bonj   our    ", "  ", "bonj   our"},
 		{"                     ", " ", ""},
+		{"abcdba", "acb", "b"},
 	};
 	size_t			count;
 	size_t			i;
