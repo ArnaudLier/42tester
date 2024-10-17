@@ -19,6 +19,7 @@ Things this does not test (yet):
 - [ ] free everything allocated when one fails
   - [ ] lstmap (including new mapped content)
   - [ ] strtrim
+  - [ ] strsplit
 
 Made by `alier` @ [42 Mulhouse](https://www.42mulhouse.fr)
 (not proud of it given the code quality)
