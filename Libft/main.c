@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/17 11:29:26 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/17 11:49:56 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -635,7 +635,7 @@ void	test_strtrim(void)
 		{"    \t\v hi", " \t\v", "hi"},
 		{"    bonj   our    ", "  ", "bonj   our"},
 		{"                     ", " ", ""},
-		{"abcdba", "acb", "b"},
+		{"abcdba", "acb", "d"},
 	};
 	size_t			count;
 	size_t			i;
