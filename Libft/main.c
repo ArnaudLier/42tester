@@ -161,6 +161,11 @@ void	test_memcpy(void)
 		fprintf(stderr, "memcpy didn't copy a byte that should have been");
 		exit(EXIT_FAILURE);
 	}
+	if (ft_memcpy(NULL, NULL, SIZE_MAX) != NULL)
+	{
+		fprintf(stderr, "memcpy didn't return NULL when both src and dst were NULL.");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	test_memmove(void)
@@ -175,6 +180,11 @@ void	test_memmove(void)
 	if (memcmp(&buffer[5], expected, 8))
 	{
 		fprintf(stderr, "memmove didn't copy a byte that should have been");
+		exit(EXIT_FAILURE);
+	}
+	if (ft_memmove(NULL, NULL, SIZE_MAX) != NULL)
+	{
+		fprintf(stderr, "memmove didn't return NULL when both src and dst were NULL.");
 		exit(EXIT_FAILURE);
 	}
 }
