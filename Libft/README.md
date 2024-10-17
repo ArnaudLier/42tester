@@ -14,5 +14,11 @@ make bonus && ./main
 
 Bonus functions' prototypes must be included in `libft.h`.
 
+Things this does not test (yet):
+- [ ] malloc "protections"
+- [ ] free everything allocated when one fails
+  - [] lstmap (including new mapped content)
+  - [] strtrim
+
 Made by `alier` @ [42 Mulhouse](https://www.42mulhouse.fr)
 (not proud of it given the code quality)
