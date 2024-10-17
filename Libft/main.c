@@ -337,6 +337,7 @@ void	test_strncmp(void)
 	const t_scntt	test_cases[] = {
 		{2, "bonjour", "bo"},
 		{8, "hihihihi", ""},
+		{2, "a\377", "ab"},
 		{SIZE_MAX, "0", "0"},
 	};
 	size_t			count;
