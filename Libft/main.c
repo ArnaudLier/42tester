@@ -229,8 +229,12 @@ void	test_strlcpy(void)
 void	test_strlcat(void)
 {
 	const t_scatt	test_cases[] = {
+		{0, 4, "0123", "0123456789", "0123456789"},
 		{2, 8, "bonjour", "b", "b"},
 		{0, 8, "hihihihi", "", ""},
+		{0, 4, "abcd", "abcd", "abcd"},
+		{4, 4, "", "abcd", "abcd"},
+		{12, 4, "", "abcd", "abcd"},
 	};
 	size_t			count;
 	size_t			i;
@@ -247,15 +251,14 @@ void	test_strlcat(void)
 		result = ft_strlcat(buffer, test_cases[i].src, test_cases[i].size);
 		if (result != test_cases[i].expected_return)
 		{
-			fprintf(stderr, "for test case %zu\n", i);
-			fprintf(stderr, "unexpected return value\n");
+			fprintf(stderr, "TC%zu: unexpected return value: %zu instead of %zu\n", i,
+				result, test_cases[i].expected_return);
 			exit(EXIT_FAILURE);
 		}
 		comparison = strcmp(buffer, test_cases[i].expected_dst);
 		if (comparison)
 		{
-			fprintf(stderr, "for test case %zu\n", i);
-			fprintf(stderr, "unexpected comparison result: %d\n", comparison);
+			fprintf(stderr, "TC%zu: unexpected comparison result: %d\n", i, comparison);
 			fprintf(stderr, "\"%s\" instead of \"%s\"\n", buffer, test_cases[i].expected_dst);
 			exit(EXIT_FAILURE);
 		}
