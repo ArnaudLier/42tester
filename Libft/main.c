@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 19:32:22 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/17 10:55:08 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,30 +255,30 @@ void	test_strlcat(void)
 
 void	test_strchr(void)
 {
-	const char	*test_values[8];
+	const t_schtc	test_cases[] = {
+		{"1234", '1'},
+		{"1231", '1'},
+		{"4231", '1'},
+		{"anticonstitutionellement", ' '},
+		{"anticonstitutionellement", 'n'},
+		{"test", 'e' + 256},
+		{"\0\0", '\0'},
+	};
 	size_t		count;
 	size_t		i;
 	char		*libc_result;
 	char		*libft_result;
 
-	test_values[0] = "1234";
-	test_values[1] = " \t\n\v\f\r5";
-	test_values[2] = "-42";
-	test_values[3] = " -+-+-42";
-	test_values[4] = "2147483647";
-	test_values[5] = "-2147483648";
-	test_values[6] = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-	test_values[7] = "\0\0";
-	count = sizeof(test_values) / sizeof(test_values[0]);
+	count = sizeof(test_cases) / sizeof(test_cases[0]);
 	i = 0;
 	printf("Testing Project Libft: ft_strchr.\n");
 	while (i < count)
 	{
-		libc_result = strchr(test_values[i], '1');
-		libft_result = ft_strchr(test_values[i], '1');
+		libc_result = strchr(test_cases[i].s1, test_cases[i].c);
+		libft_result = ft_strchr(test_cases[i].s1, test_cases[i].c);
 		if (libc_result != libft_result)
 		{
-			fprintf(stderr, "for input %s", test_values[i]);
+			fprintf(stderr, "TC%zu: for input \"%s\" and '%c'\n", i, test_cases[i].s1, test_cases[i].c);
 			fprintf(stderr, "libc: %p != libft: %p\n", libc_result, libft_result);
 			exit(EXIT_FAILURE);
 		}
@@ -288,30 +288,30 @@ void	test_strchr(void)
 
 void	test_strrchr(void)
 {
-	const char	*test_values[8];
+	const t_schtc	test_cases[] = {
+		{"1234", '1'},
+		{"1231", '1'},
+		{"4231", '1'},
+		{"anticonstitutionellement", ' '},
+		{"anticonstitutionellement", 'n'},
+		{"test", 'e' + 256},
+		{"\0\0", '\0'},
+	};
 	size_t		count;
 	size_t		i;
 	char		*libc_result;
 	char		*libft_result;
 
-	test_values[0] = "1234";
-	test_values[1] = " \t\n\v\f\r5";
-	test_values[2] = "-42";
-	test_values[3] = " -+1-+-42";
-	test_values[4] = "21474831647";
-	test_values[5] = "-2147483648";
-	test_values[6] = "eeeeeeee1eeeeeeeeeeeeee1eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-	test_values[7] = "\0\0";
-	count = sizeof(test_values) / sizeof(test_values[0]);
+	count = sizeof(test_cases) / sizeof(test_cases[0]);
 	i = 0;
 	printf("Testing Project Libft: ft_strrchr.\n");
 	while (i < count)
 	{
-		libc_result = strrchr(test_values[i], '1');
-		libft_result = ft_strrchr(test_values[i], '1');
+		libc_result = strrchr(test_cases[i].s1, test_cases[i].c);
+		libft_result = ft_strrchr(test_cases[i].s1, test_cases[i].c);
 		if (libc_result != libft_result)
 		{
-			fprintf(stderr, "for input %s", test_values[i]);
+			fprintf(stderr, "TC%zu: for input \"%s\" and '%c'\n", i, test_cases[i].s1, test_cases[i].c);
 			fprintf(stderr, "libc: %p != libft: %p\n", libc_result, libft_result);
 			exit(EXIT_FAILURE);
 		}

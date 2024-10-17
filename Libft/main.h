@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:13:55 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 11:18:30 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/17 10:53:20 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ typedef struct s_strlcat_test_case
 	const char		*dst;
 	const char		*expected_dst;
 }				t_scatt;
+
+typedef struct s_strchr_test_case
+{
+	const char	*s1;
+	int			c;
+}				t_schtc;
 
 typedef struct s_strncmp_test_case
 {
