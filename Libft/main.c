@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/17 10:55:08 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/17 11:29:26 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -629,7 +629,8 @@ void	test_strjoin(void)
 void	test_strtrim(void)
 {
 	const t_sttc	test_cases[] = {
-		{"", "\0", ""},
+		{"", "\0qqq", ""},
+		{"", "", ""},
 		{"bonjour", "br", "onjou"},
 		{"    \t\v hi", " \t\v", "hi"},
 		{"    bonj   our    ", "  ", "bonj   our"},
