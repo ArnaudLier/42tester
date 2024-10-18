@@ -1,0 +1,5 @@
+main
+libft.a
+ft_printf.h
+libftprintf.a
+*.o
