@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/18 10:13:23 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/18 17:22:16 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 bool	print_line(int fd)
 {
 	char	*line;
+	size_t	i;
 
 	line = get_next_line(fd);
 	if (line == NULL)
@@ -27,7 +28,16 @@ bool	print_line(int fd)
 		printf("line was NULL\n");
 		return (false);
 	}
-	printf("\"%s\"\n", line);
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != '\n')
+			printf("%c", line[i]);
+		else
+			printf("\\n");
+		i++;
+	}
+	printf("\n");
 	free(line);
 	return (true);
 }
@@ -39,7 +49,7 @@ void	print_all_lines(int fd)
 	i = 0;
 	while (true)
 	{
-		printf("%zu: ", i);
+		printf("%3zu: ", i);
 		if (!print_line(fd))
 			break ;
 		i++;
