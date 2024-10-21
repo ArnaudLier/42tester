@@ -1,7 +1,7 @@
 NAME ::= main
 SRCS ::= main.c get_next_line.c get_next_line_utils.c
 OBJS ::= $(SRCS:.c=.o)
-BUFFER_SIZE ::= 42
+BUFFER_SIZE ::= 1
 CFLAGS ::= -g3 -Wall -Wextra -Werror -D BUFFER_SIZE=$(BUFFER_SIZE) 
 
 all: $(NAME)
