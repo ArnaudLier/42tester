@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/21 18:57:58 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/22 16:32:18 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,23 @@
 #include <sys/types.h>
 #include "ft_printf.h"
 
-#define TEST_PRINT(fmt, ...) printfn("%s: " fmt "\n", fmt, __VA_ARGS__)
+#define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
 #define BUF_SIZE 4242
 
 int	main(int argc, char **argv)
 {
-	int		(*printfn)(const char *restrict, ...);
+	int	(*printfn)(const char *restrict, ...);
+	int	bytes_written;
 
 	printfn = ft_printf;
+	bytes_written = 0;
 	if (argc >= 2 && strcmp(argv[1], "libc") == 0)
 		printfn = printf;
 	/* CHAR */
+	printf("Format Specifier\tResult\n");
 	TEST_PRINT("%c", 'c');
+	TEST_PRINT("%1c", 'c');
+	TEST_PRINT("%2c", 'c');
 	TEST_PRINT("%3c", 'c');
 
 	/* STRING */
@@ -55,6 +60,7 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%u", 0);
 	TEST_PRINT("%u", 124);
 	TEST_PRINT("%u", UINT_MAX);
+	TEST_PRINT("%-30u", UINT_MAX);
 
 	/* HEXADECIMAL */
 	TEST_PRINT("%x", 42);
@@ -64,9 +70,17 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%.5X", -54);
 	TEST_PRINT("%X", "bonjour", 42);
 	TEST_PRINT("%X", 0);
+	TEST_PRINT("%#x", 42);
+	TEST_PRINT("%#X", 42);
+	TEST_PRINT("%X", 0);
 
 	/* ESCAPE */
+	TEST_PRINT("%", 0);
+	TEST_PRINT("%z", 0);
+	TEST_PRINT("%000z", 0);
 	TEST_PRINT("%%", 0);
 	TEST_PRINT("%3%", 0);
+
+	TEST_PRINT("Bytes written: %d", bytes_written);
 	return (EXIT_SUCCESS);
 }

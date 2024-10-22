@@ -5,7 +5,7 @@ CFLAGS ::= -g3 -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) libft.a libftprintf.a
 	cc $(CFLAGS) $(OBJS) libftprintf.a libft.a -o $(NAME)
 
 clean:
