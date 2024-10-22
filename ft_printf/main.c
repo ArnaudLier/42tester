@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/22 22:19:43 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/22 22:46:43 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char **argv)
 
 	/* STRING */
 	TEST_PRINT("%s", "bonjour");
+	TEST_PRINT("%.0s", "bonjour");
 	TEST_PRINT("%.5s", "bonjour");
 	TEST_PRINT("%.13s", "bonjour");
 	TEST_PRINT("%50.13s", "bonjour");
