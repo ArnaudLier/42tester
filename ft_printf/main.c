@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/22 16:32:18 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/22 20:08:28 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include "ft_printf.h"
 
-#define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
+#define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
 #define BUF_SIZE 4242
 
 int	main(int argc, char **argv)
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 	if (argc >= 2 && strcmp(argv[1], "libc") == 0)
 		printfn = printf;
 	/* CHAR */
-	printf("Format Specifier\tResult\n");
+	printf("Conversion Specification\tResult\n");
 	TEST_PRINT("%c", 'c');
 	TEST_PRINT("%1c", 'c');
 	TEST_PRINT("%2c", 'c');
@@ -39,10 +39,14 @@ int	main(int argc, char **argv)
 
 	/* STRING */
 	TEST_PRINT("%s", "bonjour");
+	TEST_PRINT("%.5s", "bonjour");
+	TEST_PRINT("%.13s", "bonjour");
+	TEST_PRINT("%50.13s", "bonjour");
+	TEST_PRINT("%-50.13s", "bonjour");
 
 	/* POINTER */
 	TEST_PRINT("%p", main);
-	/*TEST_PRINT("%p", NULL);	UB	 */
+	// TEST_PRINT("%p", NULL);	[UB]
 
 	/* DECIMAL */
 	TEST_PRINT("%i", 42);
@@ -60,6 +64,7 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%u", 0);
 	TEST_PRINT("%u", 124);
 	TEST_PRINT("%u", UINT_MAX);
+	TEST_PRINT("%30u", UINT_MAX);
 	TEST_PRINT("%-30u", UINT_MAX);
 
 	/* HEXADECIMAL */
@@ -70,16 +75,20 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%.5X", -54);
 	TEST_PRINT("%X", "bonjour", 42);
 	TEST_PRINT("%X", 0);
+	TEST_PRINT("%015x", 0);
+	TEST_PRINT("%015X", 0);
+	TEST_PRINT("%0-15X", 0);
+	TEST_PRINT("%#x", 0);
+	TEST_PRINT("%#X", 0);
 	TEST_PRINT("%#x", 42);
 	TEST_PRINT("%#X", 42);
-	TEST_PRINT("%X", 0);
 
 	/* ESCAPE */
-	TEST_PRINT("%", 0);
-	TEST_PRINT("%z", 0);
-	TEST_PRINT("%000z", 0);
+	// TEST_PRINT("%", 0);		[UB]
+	// TEST_PRINT("%z", 0);		[UB]
+	// TEST_PRINT("%000z", 0);	[UB]
 	TEST_PRINT("%%", 0);
-	TEST_PRINT("%3%", 0);
+	// TEST_PRINT("%3%", 0);	[UB]
 
 	TEST_PRINT("Bytes written: %d", bytes_written);
 	return (EXIT_SUCCESS);
