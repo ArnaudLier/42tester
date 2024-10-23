@@ -1,5 +1,6 @@
 main
 libft.a
+libft.h
 ft_printf.h
 libftprintf.a
 libc_output
