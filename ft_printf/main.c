@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/23 16:53:14 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/23 17:08:12 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "ft_printf.h"
 
 #define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
-#define BUF_SIZE 4242
+#define BONUS
 
 int	main(int argc, char **argv)
 {
@@ -33,53 +33,66 @@ int	main(int argc, char **argv)
 	/* CHAR */
 	printfn("Conversion Specification\tResult\n");
 	TEST_PRINT("%c", 'c');
+#ifdef BONUS
 	TEST_PRINT("%1c", 'c');
 	TEST_PRINT("%2c", 'c');
 	TEST_PRINT("%3c", 'c');
+#endif
 
 	/* STRING */
 	TEST_PRINT("%s", "bonjour");
+#ifdef BONUS
 	TEST_PRINT("%.0s", "bonjour");
 	TEST_PRINT("%.5s", "bonjour");
 	TEST_PRINT("%.13s", "bonjour");
 	TEST_PRINT("%50.13s", "bonjour");
 	TEST_PRINT("%-50.13s", "bonjour");
+#endif
 
 	/* POINTER */
 	TEST_PRINT("%p", main);
 	// TEST_PRINT("%p", NULL);	[UB]
 
 	/* DECIMAL */
+	TEST_PRINT("%i", 0);
 	TEST_PRINT("%i", 42);
+	TEST_PRINT("%ii", 42);
 	TEST_PRINT("%i", INT_MAX);
 	TEST_PRINT("%i", INT_MIN);
+	TEST_PRINT("%d", 0);
+	TEST_PRINT("%d", 42);
+	TEST_PRINT("%dd", 42);
+	TEST_PRINT("%d", INT_MAX);
+	TEST_PRINT("%d", INT_MIN);
+#ifdef BONUS
 	TEST_PRINT("%+10.5d", 4);
 	TEST_PRINT("%+- 10.5d", 4);
 	TEST_PRINT("% .5d", 4);
 	TEST_PRINT("%10.5d", 4);
 	TEST_PRINT("%3.5d", 4);
 	TEST_PRINT("%.5d", -54);
-	TEST_PRINT("%d", 42);
 	TEST_PRINT("%003d", 42);
-	TEST_PRINT("%dd", 42);
 	TEST_PRINT("%.010d", 42);
-	TEST_PRINT("%d", 0);
+#endif
 
 	/* UNSIGNED */
 	TEST_PRINT("%u", 0);
 	TEST_PRINT("%u", 124);
 	TEST_PRINT("%u", UINT_MAX);
+#ifdef BONUS
 	TEST_PRINT("%30u", UINT_MAX);
 	TEST_PRINT("%-30u", UINT_MAX);
+#endif
 
 	/* HEXADECIMAL */
 	TEST_PRINT("%x", 42);
 	TEST_PRINT("%x", INT_MAX);
 	TEST_PRINT("%x", INT_MIN);
-	TEST_PRINT("%3.5X", 4);
-	TEST_PRINT("%.5X", -54);
 	TEST_PRINT("%X", "bonjour", 42);
 	TEST_PRINT("%X", 0);
+#ifdef BONUS
+	TEST_PRINT("%3.5X", 4);
+	TEST_PRINT("%.5X", -54);
 	TEST_PRINT("%015x", 0);
 	TEST_PRINT("%015X", 0);
 	TEST_PRINT("%0-15X", 0);
@@ -87,6 +100,7 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%#X", 0);
 	TEST_PRINT("%#x", 42);
 	TEST_PRINT("%#X", 42);
+#endif
 
 	/* ESCAPE */
 	// TEST_PRINT("%", 0);		[UB]
