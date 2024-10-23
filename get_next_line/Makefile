@@ -1,19 +1,23 @@
-NAME ::= main
-SRCS ::= main.c get_next_line.c get_next_line_utils.c
+SRCS ::= mandatory.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 OBJS ::= $(SRCS:.c=.o)
-BUFFER_SIZE ::= 1
-CFLAGS ::= -g3 -Wall -Wextra -Werror -D BUFFER_SIZE=$(BUFFER_SIZE) 
+SRCS_B ::= bonus.c get_next_line/get_next_line_bonus.c get_next_line/get_next_line_utils_bonus.c
+OBJS_B ::= $(SRCS_B:.c=.o)
+BUFFER_SIZE ::= 42
+CFLAGS ::= -g3 -Wall -Wextra -Werror -D BUFFER_SIZE=$(BUFFER_SIZE) -Iget_next_line
 
-all: $(NAME)
+all: mandatory bonus
 
-$(NAME): $(OBJS)
-	cc $(CFLAGS) $(OBJS) -o $(NAME)
+mandatory: $(OBJS)
+	cc $(CFLAGS) $(OBJS) -o mandatory
+
+bonus: $(OBJS_B)
+	cc $(CFLAGS) $(OBJS_B) -o bonus
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJS_B)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f mandatory bonus
 
 re: fclean all
 
