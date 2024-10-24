@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/24 18:35:31 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/24 21:03:35 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,22 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%d", INT_MAX);
 	TEST_PRINT("%d", INT_MIN);
 #ifdef BONUS
-	TEST_PRINT("%+10.5d", 4);
+	TEST_PRINT("%+10.5d", 16);
+	TEST_PRINT("%04d", -16);
+	TEST_PRINT("% 4d", -16);
+	TEST_PRINT("% d", 0);
+	TEST_PRINT("%+4d", 16);
+	TEST_PRINT("%+.3d", 16);
+	TEST_PRINT("%+d", 16);
+	TEST_PRINT("%+d", 0);
 	TEST_PRINT("%+- 10.5d", 4);
 	TEST_PRINT("%0-10.5d", 4);
 	TEST_PRINT("% .5d", 4);
-	TEST_PRINT("%10.5d", 4);
-	TEST_PRINT("%3.5d", 4);
+	TEST_PRINT("%10.5d", 32);
+	TEST_PRINT("%3.5d", 24);
+	TEST_PRINT("%06.5d", 24);
 	TEST_PRINT("%.5d", -54);
+	TEST_PRINT("%05.d", 999);
 	TEST_PRINT("%003d", 42);
 	TEST_PRINT("%.010d", 42);
 #endif
@@ -93,6 +102,7 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%u", 124);
 	TEST_PRINT("%u", UINT_MAX);
 #ifdef BONUS
+	TEST_PRINT("%05.2u", 26);
 	TEST_PRINT("%30u", UINT_MAX);
 	TEST_PRINT("%-30u", UINT_MAX);
 #endif
