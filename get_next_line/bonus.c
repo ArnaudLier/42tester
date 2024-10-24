@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/23 17:22:23 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/23 17:31:30 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,17 @@ void	print_all_lines(int fd)
 int	main(void)
 {
 	int		test_fd;
+	size_t	i;
 
 	test_fd = open("test.txt", O_RDONLY);
-	print_line(test_fd);
+	i = 0;
+	while (true)
+	{
+		if (i % 2 == 0)
+			print_line(test_fd);
+		else if (!print_line(STDIN_FILENO))
+			break ;
+		i++;
+	}
 	close(test_fd);
-	print_line(STDIN_FILENO);
 }
