@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/23 17:08:12 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/24 14:42:03 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,12 @@ int	main(int argc, char **argv)
 
 	/* HEXADECIMAL */
 	TEST_PRINT("%x", 42);
-	TEST_PRINT("%x", INT_MAX);
-	TEST_PRINT("%x", INT_MIN);
+	TEST_PRINT("%x", UINT_MAX);
+	TEST_PRINT("%x", 0);
 	TEST_PRINT("%X", "bonjour", 42);
 	TEST_PRINT("%X", 0);
 #ifdef BONUS
+	TEST_PRINT("%15.5X", 4);
 	TEST_PRINT("%3.5X", 4);
 	TEST_PRINT("%.5X", -54);
 	TEST_PRINT("%015x", 0);
