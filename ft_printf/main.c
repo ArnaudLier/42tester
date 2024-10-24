@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/24 14:44:21 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/24 18:35:31 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 #define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
 #define BONUS
+#define UB
 
 int	main(int argc, char **argv)
 {
@@ -30,9 +31,11 @@ int	main(int argc, char **argv)
 	bytes_written = 0;
 	if (argc >= 2 && strcmp(argv[1], "libc") == 0)
 		printfn = printf;
-	/* CHAR */
 	printfn("Conversion Specification\tResult\n");
+
+	/* CHAR */
 	TEST_PRINT("%c", 'c');
+	TEST_PRINT("%c", 0);
 #ifdef BONUS
 	TEST_PRINT("%1c", 'c');
 	TEST_PRINT("%2c", 'c');
@@ -41,6 +44,9 @@ int	main(int argc, char **argv)
 
 	/* STRING */
 	TEST_PRINT("%s", "bonjour");
+#ifdef UB
+	TEST_PRINT("%s", NULL);
+#endif
 #ifdef BONUS
 	TEST_PRINT("%.0s", "bonjour");
 	TEST_PRINT("%.5s", "bonjour");
@@ -51,7 +57,13 @@ int	main(int argc, char **argv)
 
 	/* POINTER */
 	TEST_PRINT("%p", main);
-	// TEST_PRINT("%p", NULL);	[UB]
+#ifdef BONUS
+	TEST_PRINT("%-20p", main);
+	TEST_PRINT("%20p", main);
+#endif
+#ifdef UB
+	TEST_PRINT("%p", NULL);
+#endif
 
 	/* DECIMAL */
 	TEST_PRINT("%i", 0);
@@ -67,6 +79,7 @@ int	main(int argc, char **argv)
 #ifdef BONUS
 	TEST_PRINT("%+10.5d", 4);
 	TEST_PRINT("%+- 10.5d", 4);
+	TEST_PRINT("%0-10.5d", 4);
 	TEST_PRINT("% .5d", 4);
 	TEST_PRINT("%10.5d", 4);
 	TEST_PRINT("%3.5d", 4);

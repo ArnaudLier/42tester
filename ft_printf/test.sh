@@ -1,5 +1,5 @@
 #!/bin/bash
 
-./main > libft_output
-./main libc > libc_output
+./main | xxd > libft_output
+./main libc | xxd > libc_output
 diff libc_output libft_output
