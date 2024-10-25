@@ -1,9 +1,10 @@
-SRCS ::= mandatory.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
+PROJECT_DIR ::= get_next_line
+SRCS ::= mandatory.c $(PROJECT_DIR)/get_next_line.c $(PROJECT_DIR)/get_next_line_utils.c
 OBJS ::= $(SRCS:.c=.o)
-SRCS_B ::= bonus.c get_next_line/get_next_line_bonus.c get_next_line/get_next_line_utils_bonus.c
+SRCS_B ::= bonus.c $(PROJECT_DIR)/get_next_line_bonus.c $(PROJECT_DIR)/get_next_line_utils_bonus.c
 OBJS_B ::= $(SRCS_B:.c=.o)
-BUFFER_SIZE ::= 42
-CFLAGS ::= -g3 -Wall -Wextra -Werror -D BUFFER_SIZE=$(BUFFER_SIZE) -Iget_next_line
+BUFFER_SIZE ::= 10000000
+CFLAGS ::= -g3 -Wall -Wextra -Werror -D BUFFER_SIZE=$(BUFFER_SIZE) -I$(PROJECT_DIR)
 
 all: mandatory bonus
 

@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/23 17:18:22 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/25 12:03:23 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,8 @@ int	main(void)
 	test_fd = open("test.txt", O_RDONLY);
 	print_all_lines(test_fd);
 	close(test_fd);
+	print_line(test_fd);
+	print_line(1000);
+	print_line(-1);
 	print_all_lines(STDIN_FILENO);
 }
