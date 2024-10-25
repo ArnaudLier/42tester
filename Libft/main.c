@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/17 11:49:56 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/25 11:31:43 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1045,4 +1045,5 @@ int	main(void)
 	test_lstiter();
 	test_lstmap();
 #endif
+	printf("\x1B[1;32mYou passed all tests! Congrats!\x1B[0m\n");
 }

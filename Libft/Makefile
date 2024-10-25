@@ -1,7 +1,9 @@
-build: libft.h libft.a main.c
-	cc -g3 -Wall -Wextra -Werror main.c libft.a -lbsd -o main
+mandatory: libft/libft.h libft/libft.a main.c
+	cc -g3 -Wall -Wextra -Werror main.c libft/libft.a -lbsd -Ilibft -o mandatory
 
-bonus: libft.h libft.a main.c bonus.c
-	cc -g3 -Wall -Wextra -Werror -DBONUS main.c bonus.c libft.a -lbsd -o main
+libft/libft.a:
+	cd libft && make
 
-.PHONY: build
+bonus: libft/libft.h libft/libft.a main.c bonus.c
+	cd libft && make bonus
+	cc -g3 -Wall -Wextra -Werror -DBONUS main.c bonus.c libft/libft.a -Ilibft -lbsd -o bonus

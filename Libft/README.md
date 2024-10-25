@@ -1,6 +1,6 @@
 # 42 Libft Tester
 
-To use it, create a symbolic link to `libft.h` and `libft.a` in this directory.
+To use it, create a symbolic link to the Libft directory in this directory with name `libft`.
 Then, run:
 
 ```bash
