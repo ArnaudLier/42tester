@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/25 14:05:11 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/25 14:20:12 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 #define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
 #define BONUS
-#define UB
+//#define UB
 
 int	main(int argc, char **argv)
 {
