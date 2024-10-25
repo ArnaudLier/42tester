@@ -1,13 +1,13 @@
 #!/bin/sh
 
 make
-./main | xxd > libft_output
-./main libc | xxd > libc_output
-DIFF_OUTPUT=$(diff libc_output libft_output)
+./main > libft_output
+./main libc > libc_output
+DIFF_OUTPUT=$(diff -a libc_output libft_output)
 
 if [ -z "$DIFF_OUTPUT" ]; then
-	echo "Tests passed! Congrats!"
+	echo "\e[1;32mTests passed! Congrats!\e[0m"
 else
-	echo "No cookie for you today :("
+	echo "\e[1;31mNo cookie for you today :(\e[0m"
 	echo "$DIFF_OUTPUT"
 fi

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-watch ./test.sh
+watch --color ./test.sh
