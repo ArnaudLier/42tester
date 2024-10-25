@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/24 21:03:35 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/25 09:45:45 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 #define TEST_PRINT(fmt, ...) bytes_written += printfn("%s\t\t\t\t|" fmt "|\n", fmt, __VA_ARGS__)
 #define BONUS
-#define UB
+//#define UB
 
 int	main(int argc, char **argv)
 {
@@ -40,6 +40,9 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%1c", 'c');
 	TEST_PRINT("%2c", 'c');
 	TEST_PRINT("%3c", 'c');
+# ifdef UB
+	TEST_PRINT("%.c", 'a');
+# endif
 #endif
 
 	/* STRING */
@@ -53,6 +56,9 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%.13s", "bonjour");
 	TEST_PRINT("%50.13s", "bonjour");
 	TEST_PRINT("%-50.13s", "bonjour");
+# ifdef UB
+	TEST_PRINT("%3.1s", NULL);
+# endif
 #endif
 
 	/* POINTER */
@@ -68,18 +74,19 @@ int	main(int argc, char **argv)
 	/* DECIMAL */
 	TEST_PRINT("%i", 0);
 	TEST_PRINT("%i", 42);
-	TEST_PRINT("%ii", 42);
+	TEST_PRINT("d %i a", 42);
 	TEST_PRINT("%i", INT_MAX);
 	TEST_PRINT("%i", INT_MIN);
 	TEST_PRINT("%d", 0);
 	TEST_PRINT("%d", 42);
-	TEST_PRINT("%dd", 42);
+	TEST_PRINT("a %d b", 42);
 	TEST_PRINT("%d", INT_MAX);
 	TEST_PRINT("%d", INT_MIN);
 #ifdef BONUS
 	TEST_PRINT("%+10.5d", 16);
 	TEST_PRINT("%04d", -16);
 	TEST_PRINT("% 4d", -16);
+	TEST_PRINT("%.d", 0);
 	TEST_PRINT("% d", 0);
 	TEST_PRINT("%+4d", 16);
 	TEST_PRINT("%+.3d", 16);
@@ -103,6 +110,7 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%u", UINT_MAX);
 #ifdef BONUS
 	TEST_PRINT("%05.2u", 26);
+	TEST_PRINT("%.5u", 0);
 	TEST_PRINT("%30u", UINT_MAX);
 	TEST_PRINT("%-30u", UINT_MAX);
 #endif
@@ -120,6 +128,8 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%015x", 0);
 	TEST_PRINT("%015X", 0);
 	TEST_PRINT("%0-15X", 0);
+	TEST_PRINT("%-5.x", 0);
+	TEST_PRINT("%-5.X", 0);
 	TEST_PRINT("%#15.5X", 987);
 	TEST_PRINT("%#x", 0);
 	TEST_PRINT("%#X", 0);
@@ -128,11 +138,13 @@ int	main(int argc, char **argv)
 #endif
 
 	/* ESCAPE */
-	// TEST_PRINT("%", 0);		[UB]
-	// TEST_PRINT("%z", 0);		[UB]
-	// TEST_PRINT("%000z", 0);	[UB]
 	TEST_PRINT("%%", 0);
-	// TEST_PRINT("%3%", 0);	[UB]
+#ifdef UB
+	TEST_PRINT("%", 0);
+	TEST_PRINT("%z", 0);
+	TEST_PRINT("%000z", 0);
+	TEST_PRINT("%3%", 0);
+#endif
 
 	TEST_PRINT("Bytes written: %d", bytes_written);
 	return (EXIT_SUCCESS);
