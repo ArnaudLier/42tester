@@ -1,8 +1,5 @@
 main
-libft.a
-libft.h
-ft_printf.h
-libftprintf.a
+ft_printf
 libc_output
 libft_output
 *.o
