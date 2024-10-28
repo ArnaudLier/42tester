@@ -6,13 +6,14 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/23 17:31:30 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/28 18:35:41 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "get_next_line.h"
@@ -65,6 +66,7 @@ int	main(void)
 	i = 0;
 	while (true)
 	{
+		print_line(INT_MAX);
 		if (i % 2 == 0)
 			print_line(test_fd);
 		else if (!print_line(STDIN_FILENO))

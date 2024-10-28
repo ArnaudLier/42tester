@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/28 15:39:35 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/28 18:37:21 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ int	main(void)
 	print_line(test_fd);
 	print_line(1000);
 	print_line(-1);
+	print_line(INT_MAX);
+	print_line(INT_MIN);
 	print_all_lines(STDIN_FILENO);
 }
