@@ -1,12 +1,16 @@
 NAME ::= main
 SRCS ::= main.c
 OBJS ::= $(SRCS:.c=.o)
-CFLAGS ::= -g3 -Wall -Wextra -Werror
+OBJS_LIBS ::= ft_printf/libft/libft.a ft_printf/libftprintf.a
+CFLAGS ::= -g3 -Wall -Wextra -Werror -Ift_printf -Ift_printf/libft
 
 all: $(NAME)
 
-$(NAME): $(OBJS) libft.a libftprintf.a
-	cc $(CFLAGS) $(OBJS) libftprintf.a libft.a -o $(NAME)
+$(NAME): $(OBJS) $(OBJS_LIBS)
+	cc $(CFLAGS) $(OBJS) $(OBJS_LIBS) -o $(NAME)
+
+ft_printf/libftprintf.a:
+	cd ft_printf && make
 
 clean:
 	rm -f $(OBJS)
@@ -16,4 +20,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean ft_printf/libftprintf.a fclean re
