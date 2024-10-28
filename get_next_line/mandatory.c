@@ -6,16 +6,31 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/25 12:03:23 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/28 14:20:47 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <dlfcn.h>
 #include <stdbool.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "get_next_line.h"
+
+ssize_t read(int fd, void *buf, size_t count)
+{
+	ssize_t (*libc_read)(int, void *, size_t);
+
+	libc_read = dlsym(RTLD_NEXT, "read");
+	if (count != BUFFER_SIZE)
+	{
+		fprintf(stderr, "%zu was read instead of %zu\n", count, (size_t) BUFFER_SIZE);
+		return (-1);
+	}
+	return (libc_read(fd, buf, count));
+}
 
 bool	print_line(int fd)
 {
