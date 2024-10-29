@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:38:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/28 15:40:41 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/29 15:15:38 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <dlfcn.h>
-
-bool malloc_failure = true;
 
 ssize_t read(int fd, void *buf, size_t count)
 {
@@ -36,8 +34,9 @@ void *malloc(size_t size)
 {
 	void *(*libc_malloc)(size_t);
 
-	if (malloc_failure)
+#ifdef MALLOC_FAILURE
 		return (NULL);
+#endif
 	libc_malloc = dlsym(RTLD_NEXT, "malloc");
 	return (libc_malloc(size));
 }

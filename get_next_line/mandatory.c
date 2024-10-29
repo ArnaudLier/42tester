@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/28 18:37:21 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/29 15:14:45 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdbool.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <limits.h>
 #include "get_next_line.h"
 
 bool	print_line(int fd)
