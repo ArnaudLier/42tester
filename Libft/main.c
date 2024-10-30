@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/25 11:31:43 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/30 10:44:40 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,10 +162,7 @@ void	test_memcpy(void)
 		exit(EXIT_FAILURE);
 	}
 	if (ft_memcpy(NULL, NULL, SIZE_MAX) != NULL)
-	{
-		fprintf(stderr, "memcpy didn't return NULL when both src and dst were NULL.");
-		exit(EXIT_FAILURE);
-	}
+		fprintf(stderr, RED "memcpy didn't return NULL when both src and dst were NULL." RESET);
 }
 
 void	test_memmove(void)
@@ -183,10 +180,7 @@ void	test_memmove(void)
 		exit(EXIT_FAILURE);
 	}
 	if (ft_memmove(NULL, NULL, SIZE_MAX) != NULL)
-	{
-		fprintf(stderr, "memmove didn't return NULL when both src and dst were NULL.");
-		exit(EXIT_FAILURE);
-	}
+		fprintf(stderr, RED "memmove didn't return NULL when both src and dst were NULL." RESET);
 }
 
 void	test_strlcpy(void)
@@ -1045,5 +1039,5 @@ int	main(void)
 	test_lstiter();
 	test_lstmap();
 #endif
-	printf("\x1B[1;32mYou passed all tests! Congrats!\x1B[0m\n");
+	printf(GREEN "You passed all required tests! Congrats!\n" RESET);
 }

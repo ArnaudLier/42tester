@@ -7,3 +7,5 @@ libft/libft.a:
 bonus: libft/libft.h libft/libft.a main.c bonus.c
 	cd libft && make bonus
 	cc -g3 -Wall -Wextra -Werror -DBONUS main.c bonus.c libft/libft.a -Ilibft -lbsd -o bonus
+
+.PHONY: libft/libft.a

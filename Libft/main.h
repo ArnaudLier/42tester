@@ -6,9 +6,13 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:13:55 by alier             #+#    #+#             */
-/*   Updated: 2024/10/17 10:53:20 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/30 10:38:00 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define GREEN "\x1B[1;32m"
+#define RED "\x1B[1;31m"
+#define RESET "\x1B[0m"
 
 typedef int	t_chrclasser(int);
 

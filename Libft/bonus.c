@@ -6,12 +6,13 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 09:49:43 by alier             #+#    #+#             */
-/*   Updated: 2024/10/16 19:25:14 by alier            ###   ########.fr       */
+/*   Updated: 2024/10/30 10:41:59 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "main.h"
 #include "libft.h"
 
 void	test_lstnew(void)
@@ -180,10 +181,10 @@ void	test_lstclear(void)
 	lst3 = ft_lstnew(NULL);
 	ft_lstadd_front(&lst, lst2);
 	ft_lstadd_front(&lst, lst3);
-	ft_lstclear(&lst, NULL);
+	ft_lstclear(&lst, free);
 	if (lst != NULL)
 	{
-		fprintf(stderr, "pointer was not set to NULL");
+		fprintf(stderr, RED "pointer was not set to NULL with non-NULL destructor\n" RESET);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -212,13 +213,13 @@ void	test_lstiter(void)
 	ft_lstiter(lst, lstiter_inc);
 	if (*(int *) lst->content != 43)
 	{
-		fprintf(stderr, "function was not applied on element");
+		fprintf(stderr, "function was not applied on element\n");
 		ft_lstclear(&lst, NULL);
 		exit(EXIT_FAILURE);
 	}
 	if (*(int *) lst->next->content != 22)
 	{
-		fprintf(stderr, "function was not applied on element");
+		fprintf(stderr, "function was not applied on element\n");
 		ft_lstclear(&lst, NULL);
 		exit(EXIT_FAILURE);
 	}
