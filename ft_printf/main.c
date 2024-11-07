@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/10/29 11:30:12 by alier            ###   ########.fr       */
+/*   Updated: 2024/11/07 15:40:48 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,19 @@ int	main(int argc, char **argv)
 	TEST_PRINT("%d", INT_MAX);
 	TEST_PRINT("%d", INT_MIN);
 #ifdef BONUS
-	TEST_PRINT("%+10.5d", 16);
 	TEST_PRINT("%04d", -16);
 	TEST_PRINT("% 4d", -16);
 	TEST_PRINT("%.d", 0);
 	TEST_PRINT("% d", 0);
 	TEST_PRINT("%+4d", 16);
+	TEST_PRINT("%+10.5d", -50);
+	TEST_PRINT("%+ 10.5d", -50);
+	TEST_PRINT("%+10.5d", 16);
 	TEST_PRINT("%+.3d", 16);
 	TEST_PRINT("%+d", 16);
 	TEST_PRINT("%+d", 0);
 	TEST_PRINT("%+- 10.5d", 4);
+	TEST_PRINT("%+-  10.5d", -4);
 	TEST_PRINT("%0-10.5d", 4);
 	TEST_PRINT("% .5d", 4);
 	TEST_PRINT("%10.5d", 32);
