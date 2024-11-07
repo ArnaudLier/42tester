@@ -3,6 +3,12 @@ SRCS ::= main.c
 OBJS ::= $(SRCS:.c=.o)
 OBJS_LIBS ::= ft_printf/libftprintf.a
 CFLAGS ::= -g3 -Wall -Wextra -Werror -Ift_printf
+ifdef BONUS
+CFLAGS ::= $(CFLAGS) -DBONUS
+endif
+ifdef UB
+CFLAGS ::= $(CFLAGS) -DUB
+endif
 
 all: $(NAME)
 
