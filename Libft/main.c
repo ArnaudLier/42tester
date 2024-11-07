@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 17:22:29 by alier             #+#    #+#             */
-/*   Updated: 2024/10/30 10:44:40 by alier            ###   ########.fr       */
+/*   Updated: 2024/11/07 15:44:58 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,10 @@ void	test_memcpy(void)
 		fprintf(stderr, "memcpy didn't copy a byte that should have been");
 		exit(EXIT_FAILURE);
 	}
+#ifdef UB
 	if (ft_memcpy(NULL, NULL, SIZE_MAX) != NULL)
 		fprintf(stderr, RED "memcpy didn't return NULL when both src and dst were NULL." RESET);
+#endif
 }
 
 void	test_memmove(void)
@@ -179,8 +181,10 @@ void	test_memmove(void)
 		fprintf(stderr, "memmove didn't copy a byte that should have been");
 		exit(EXIT_FAILURE);
 	}
+#ifdef UB
 	if (ft_memmove(NULL, NULL, SIZE_MAX) != NULL)
 		fprintf(stderr, RED "memmove didn't return NULL when both src and dst were NULL." RESET);
+#endif
 }
 
 void	test_strlcpy(void)
