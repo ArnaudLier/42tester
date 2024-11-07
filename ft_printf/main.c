@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/11/07 17:12:09 by alier            ###   ########.fr       */
+/*   Updated: 2024/11/07 17:43:45 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ int	main(int argc, char **argv)
 
 	/* MISC */
 	TEST_PRINT("Bonjour %ce monde ! %d is your answer.", 'l', 42);
+	TEST_PRINT("Bonsoir %c%c%s.", '4', '2', " Mulhouse");
 
 	TEST_PRINT("Bytes written: %d", bytes_written);
 	return (EXIT_SUCCESS);
