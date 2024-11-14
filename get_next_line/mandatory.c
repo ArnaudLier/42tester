@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:35:07 by alier             #+#    #+#             */
-/*   Updated: 2024/10/29 15:14:45 by alier            ###   ########.fr       */
+/*   Updated: 2024/11/07 16:17:33 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <limits.h>
 #include "get_next_line.h"
+
+extern bool malloc_failure;
 
 bool	print_line(int fd)
 {
