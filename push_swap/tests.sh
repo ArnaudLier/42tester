@@ -12,7 +12,8 @@ test()
 		ARG=$(echo "$ARG" | awk '{for(i=1;i<=NF;i++){$i=$i-2147483648}}1')
 		#echo "Trying $(echo "$ARG" | tr '\n' ' ')"
 		INSTRUCTIONS=$(./push_swap $ARG)
-		INSTRUCTION_COUNT=$(echo -n "$INSTRUCTIONS" | wc -l)
+		#echo "Instructions: $INSTRUCTIONS"
+		INSTRUCTION_COUNT=$(echo -n "$INSTRUCTIONS" | grep -c '^')
 		if [ "$MINIMUM" -gt "$INSTRUCTION_COUNT" ]; then
 			MINIMUM=$INSTRUCTION_COUNT
 		fi
@@ -29,14 +30,15 @@ test()
 	echo "Minimum: $MINIMUM instructions"
 	echo "Average: $((TOTAL/$2)) instructions"
 	echo "Maximum: $MAXIMUM instructions"
+	echo "Objective: < $3 instructions"
 	echo ""
 }
 
-test 1 1
-test 3 300
-test 5 300
-test 100 100
-test 500 100
+test 1 1 0
+test 3 300 3
+test 5 300 12
+test 100 100 700
+test 500 100 5500
 
 if [ "$(./push_swap 1 1 2>&1 >/dev/null)" != "Error" ]; then
 	echo "does not error on duplicates"
