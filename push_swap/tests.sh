@@ -30,11 +30,12 @@ test()
 	echo "Minimum: $MINIMUM instructions"
 	echo "Average: $((TOTAL/$2)) instructions"
 	echo "Maximum: $MAXIMUM instructions"
-	echo "Objective: < $3 instructions"
+	echo "Objective: <= $3 instructions"
 	echo ""
 }
 
 test 1 1 0
+test 2 10 1
 test 3 300 3
 test 5 300 12
 test 100 100 700
