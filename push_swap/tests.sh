@@ -1,6 +1,7 @@
 #!/bin/bash
 
-USE_OWN_CHECKER=0
+CHECKER=./checker_linux
+#CHECKER=./checker
 
 test()
 {
@@ -25,11 +26,7 @@ test()
 			MAXIMUM=$INSTRUCTION_COUNT
 		fi
 		TOTAL=$((TOTAL + INSTRUCTION_COUNT))
-		if [ "$USE_OWN_CHECKER" != "0" ]; then
-			RESULT=$(echo -n "$INSTRUCTIONS" | ./checker $ARG 2>&1)
-		else
-			RESULT=$(echo -n "$INSTRUCTIONS" | ./checker_linux $ARG 2>&1)
-		fi
+		RESULT=$(echo -n "$INSTRUCTIONS" | $CHECKER $ARG 2>&1)
 		if [ "$RESULT" != "OK" ]; then
 			echo "KO on input $(echo "$ARG" | tr '\n' ' '): "$RESULT""
 			exit 1
@@ -75,4 +72,10 @@ fi
 
 if [ "$(./push_swap -21474836490000 2>&1 >/dev/null)" != "Error" ]; then
 	echo "does not error on underflow"
+fi
+
+# Checker tests
+RESULT=$(echo -n "sa" | $CHECKER 2 1 2>&1 >/dev/null)
+if [ "$RESULT" != "Error" ]; then
+	echo "does not error on missing newline"
 fi
