@@ -23,6 +23,18 @@ test()
 		IFS= read -rd '' INSTRUCTIONS < <( ./push_swap $ARG )
 		#echo "Instructions: $INSTRUCTIONS"
 		INSTRUCTION_COUNT=$(echo -n "$INSTRUCTIONS" | grep -c '^')
+		if [ "$(echo "$INSTRUCTIONS" | tr '\n' ':' | grep -o ":rra:rrb" | wc -l)" != "0" ]; then
+			echo -e $RED"rra then rrb instead of rrr was detected"$RESET
+		fi
+		if [ "$(echo "$INSTRUCTIONS" | tr '\n' ':' | grep -o ":rrb:rra" | wc -l)" != "0" ]; then
+			echo -e $RED"rrb then rra instead of rrr was detected"$RESET
+		fi
+		if [ "$(echo "$INSTRUCTIONS" | tr '\n' ':' | grep -o ":ra:rb" | wc -l)" != "0" ]; then
+			echo -e $RED"ra then rb instead of rr was detected"$RESET
+		fi
+		if [ "$(echo "$INSTRUCTIONS" | tr '\n' ':' | grep -o ":rb:ra" | wc -l)" != "0" ]; then
+			echo -e $RED"rb then ra instead of rr was detected"$RESET
+		fi
 		if [ "$MINIMUM" -gt "$INSTRUCTION_COUNT" ]; then
 			MINIMUM=$INSTRUCTION_COUNT
 		fi
@@ -42,6 +54,7 @@ test()
 	if [ "$MAXIMUM" -le "$OBJECTIVE" ]; then
 		echo -ne $GREEN
 	else
+		echo "$ARGS" >> rejected
 		echo -ne $RED
 	fi
 	echo -e "Objective: <= $OBJECTIVE instructions"$RESET
