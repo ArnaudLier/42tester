@@ -2,14 +2,16 @@
 
 test()
 {
-	echo "Testing $1 random numbers..."
+	NUMBER_COUNT=$1
+	TEST_COUNT=$2
+	OBJECTIVE=$3
+	echo "Testing $NUMBER_COUNT random numbers $TEST_COUNT time(s)..."
 	TOTAL=0
 	MINIMUM=999999999999999999
 	MAXIMUM=0
-	for _ in $(seq "$2")
+	for _ in $(seq "$TEST_COUNT")
 	do
-		ARG=$(shuf -i 0-4294967295 -n "$1")
-		ARG=$(echo "$ARG" | awk '{for(i=1;i<=NF;i++){$i=$i-2147483648}}1')
+		ARG=$(shuf -i 0-4294967295 -n "$NUMBER_COUNT" | awk '{for(i=1;i<=NF;i++){$i=$i-2147483648}}1')
 		#echo "Trying $(echo "$ARG" | tr '\n' ' ')"
 		INSTRUCTIONS=$(./push_swap $ARG)
 		#echo "Instructions: $INSTRUCTIONS"
@@ -28,9 +30,9 @@ test()
 		fi
 	done
 	echo "Minimum: $MINIMUM instructions"
-	echo "Average: $((TOTAL/$2)) instructions"
+	echo "Average: $((TOTAL/TEST_COUNT)) instructions"
 	echo "Maximum: $MAXIMUM instructions"
-	echo "Objective: <= $3 instructions"
+	echo "Objective: <= $OBJECTIVE instructions"
 	echo ""
 }
 
