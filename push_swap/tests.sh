@@ -1,5 +1,7 @@
 #!/bin/bash
 
+USE_OWN_CHECKER=0
+
 test()
 {
 	NUMBER_COUNT=$1
@@ -13,7 +15,7 @@ test()
 	do
 		ARG=$(shuf -i 0-4294967295 -n "$NUMBER_COUNT" | awk '{for(i=1;i<=NF;i++){$i=$i-2147483648}}1')
 		#echo "Trying $(echo "$ARG" | tr '\n' ' ')"
-		INSTRUCTIONS=$(./push_swap $ARG)
+		IFS= read -rd '' INSTRUCTIONS < <( ./push_swap $ARG )
 		#echo "Instructions: $INSTRUCTIONS"
 		INSTRUCTION_COUNT=$(echo -n "$INSTRUCTIONS" | grep -c '^')
 		if [ "$MINIMUM" -gt "$INSTRUCTION_COUNT" ]; then
@@ -23,7 +25,11 @@ test()
 			MAXIMUM=$INSTRUCTION_COUNT
 		fi
 		TOTAL=$((TOTAL + INSTRUCTION_COUNT))
-		RESULT=$(echo -n "$INSTRUCTIONS" | ./checker $ARG 2>&1)
+		if [ "$USE_OWN_CHECKER" != "0" ]; then
+			RESULT=$(echo -n "$INSTRUCTIONS" | ./checker $ARG 2>&1)
+		else
+			RESULT=$(echo -n "$INSTRUCTIONS" | ./checker_linux $ARG 2>&1)
+		fi
 		if [ "$RESULT" != "OK" ]; then
 			echo "KO on input $(echo "$ARG" | tr '\n' ' '): "$RESULT""
 			exit 1
