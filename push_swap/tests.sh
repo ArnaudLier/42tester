@@ -3,6 +3,10 @@
 CHECKER=./checker_linux
 #CHECKER=./checker
 
+RESET="\e[0m"
+RED="\e[1;31m"
+GREEN="\e[1;32m"
+
 test()
 {
 	NUMBER_COUNT=$1
@@ -35,7 +39,12 @@ test()
 	echo "Minimum: $MINIMUM instructions"
 	echo "Average: $((TOTAL/TEST_COUNT)) instructions"
 	echo "Maximum: $MAXIMUM instructions"
-	echo "Objective: <= $OBJECTIVE instructions"
+	if [ "$MAXIMUM" -le "$OBJECTIVE" ]; then
+		echo -ne $GREEN
+	else
+		echo -ne $RED
+	fi
+	echo -e "Objective: <= $OBJECTIVE instructions"$RESET
 	echo ""
 }
 
@@ -47,35 +56,35 @@ test 100 100 700
 test 500 100 5500
 
 if [ "$(./push_swap 1 1 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on duplicates"
+	echo -e $RED"does not error on duplicates"$RESET
 fi
 
 if [ "$(./push_swap 1 1e 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on invalid number"
+	echo -e $RED"does not error on invalid number"$RESET
 fi
 
 if [ "$(./push_swap 1 one 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on invalid number"
+	echo -e $RED"does not error on invalid number"$RESET
 fi
 
 if [ "$(./push_swap 2147483648 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on overflow"
+	echo -e $RED"does not error on overflow"$RESET
 fi
 
 if [ "$(./push_swap 99999999999999 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on overflow"
+	echo -e $RED"does not error on overflow"$RESET
 fi
 
 if [ "$(./push_swap -2147483649 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on underflow"
+	echo -e $RED"does not error on underflow"$RESET
 fi
 
 if [ "$(./push_swap -21474836490000 2>&1 >/dev/null)" != "Error" ]; then
-	echo "does not error on underflow"
+	echo -e $RED"does not error on underflow"$RESET
 fi
 
 # Checker tests
 RESULT=$(echo -n "sa" | $CHECKER 2 1 2>&1 >/dev/null)
 if [ "$RESULT" != "Error" ]; then
-	echo "does not error on missing newline"
+	echo -e $RED"does not error on missing newline"$RESET
 fi
