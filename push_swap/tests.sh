@@ -68,35 +68,53 @@ test 5 300 12
 test 100 100 700
 test 500 100 5500
 
-if [ "$(./push_swap 1 1 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on duplicates"$RESET
-fi
+test_args()
+{
+	PROGRAM=$1
 
-if [ "$(./push_swap 1 1e 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on invalid number"$RESET
-fi
+	RESULT=$(echo -n "sa" | $PROGRAM 2>&1 >/dev/null)
+	if [ "$RESULT" == "Error" ]; then
+		echo -e $RED"$PROGRAM errors on no args"$RESET
+	fi
 
-if [ "$(./push_swap 1 one 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on invalid number"$RESET
-fi
+	if [ "$($PROGRAM 1 1 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on duplicates"$RESET
+	fi
 
-if [ "$(./push_swap 2147483648 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on overflow"$RESET
-fi
+	if [ "$($PROGRAM 1 1e 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on invalid number"$RESET
+	fi
 
-if [ "$(./push_swap 99999999999999 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on overflow"$RESET
-fi
+	if [ "$($PROGRAM 1 one 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on invalid number"$RESET
+	fi
 
-if [ "$(./push_swap -2147483649 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on underflow"$RESET
-fi
+	if [ "$($PROGRAM 2147483648 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on overflow"$RESET
+	fi
 
-if [ "$(./push_swap -21474836490000 2>&1 >/dev/null)" != "Error" ]; then
-	echo -e $RED"does not error on underflow"$RESET
-fi
+	if [ "$($PROGRAM 99999999999999 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on overflow"$RESET
+	fi
+
+	if [ "$($PROGRAM 18446744073709551564 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on overflow"$RESET
+	fi
+
+	if [ "$($PROGRAM -2147483649 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on underflow"$RESET
+	fi
+
+	if [ "$($PROGRAM -21474836490000 2>&1 >/dev/null)" != "Error" ]; then
+		echo -e $RED"$PROGRAM does not error on underflow"$RESET
+	fi
+}
+
+test_args ./push_swap
 
 # Checker tests
+test_args $CHECKER
+
 RESULT=$(echo -n "sa" | $CHECKER 2 1 2>&1 >/dev/null)
 if [ "$RESULT" != "Error" ]; then
 	echo -e $RED"does not error on missing newline"$RESET
