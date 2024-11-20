@@ -1,0 +1,2 @@
+2 810 200 200 2
+1 800 200 200 # the philosopher must take a fork and die
