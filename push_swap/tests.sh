@@ -119,3 +119,8 @@ RESULT=$(echo -n "sa" | $CHECKER 2 1 2>&1 >/dev/null)
 if [ "$RESULT" != "Error" ]; then
 	echo -e $RED"does not error on missing newline"$RESET
 fi
+
+RESULT=$(echo "rr" | $CHECKER 2 1 2>/dev/null)
+if [ "$RESULT" != "OK" ]; then
+	echo -e $RED"does not OK with valid rr instruction with an empty stack"$RESET
+fi
