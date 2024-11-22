@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 16:22:01 by alier             #+#    #+#             */
-/*   Updated: 2024/11/07 17:43:45 by alier            ###   ########.fr       */
+/*   Updated: 2024/11/22 14:17:11 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	main(int argc, char **argv)
 
 	/* DECIMAL */
 	TEST_PRINT("%i", 0);
+	TEST_PRINT("%i", 9);
+	TEST_PRINT("%i", 10);
 	TEST_PRINT("%i", 42);
 	TEST_PRINT("d %i a", 42);
 	TEST_PRINT("%i", INT_MAX);
@@ -114,6 +116,8 @@ int	main(int argc, char **argv)
 
 	/* UNSIGNED */
 	TEST_PRINT("%u", 0);
+	TEST_PRINT("%u", 9);
+	TEST_PRINT("%u", 10);
 	TEST_PRINT("%u", 124);
 	TEST_PRINT("%u", UINT_MAX);
 #ifdef BONUS
@@ -124,6 +128,8 @@ int	main(int argc, char **argv)
 #endif
 
 	/* HEXADECIMAL */
+	TEST_PRINT("%x", 9);
+	TEST_PRINT("%x", 10);
 	TEST_PRINT("%x", 42);
 	TEST_PRINT("%x", UINT_MAX);
 	TEST_PRINT("%x", 0);
