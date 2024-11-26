@@ -21,6 +21,7 @@ fn test(
     use_own_checker: bool,
 ) {
     let mut rng = rand::thread_rng();
+    // TODO: fix duplicates
     let arg = (0..number_count)
         .map(|_| rng.gen_range(i32::MIN..=i32::MAX))
         .map(|i| i.to_string())
