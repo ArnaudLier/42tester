@@ -30,6 +30,7 @@ fn test(
     let mut push_swap = Command::new("./push_swap")
         .arg(&arg)
         .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
         .spawn()
         .expect("failed to execute push_swap");
     let mut program = "./checker_linux";
@@ -42,20 +43,30 @@ fn test(
         .stdout(Stdio::piped())
         .spawn()
         .expect("failed to execute checker");
-    let mut push_swap_out = String::new();
+    let mut push_swap_stdout = String::new();
+    let mut push_swap_stderr = String::new();
     push_swap
         .stdout
         .take()
         .expect("failed to open push_swap stdout")
-        .read_to_string(&mut push_swap_out)
+        .read_to_string(&mut push_swap_stdout)
         .expect("failed to read push_swap stdout");
+    push_swap
+        .stderr
+        .take()
+        .expect("failed to open push_swap stderr")
+        .read_to_string(&mut push_swap_stderr)
+        .expect("failed to read push_swap stderr");
+    if push_swap_stderr.contains("Error") {
+        eprintln!("{RED}{arg} failed...{RESET}");
+    }
     checker
         .stdin
         .take()
         .expect("failed to open checker stdin")
-        .write_all(push_swap_out.as_bytes())
+        .write_all(push_swap_stdout.as_bytes())
         .expect("failed to write to checker stdin");
-    let instruction_count = push_swap_out.lines().count() as u32;
+    let instruction_count = push_swap_stdout.lines().count() as u32;
     *sum.lock().unwrap() += f64::from(instruction_count);
     let mut minimum: std::sync::MutexGuard<'_, u32> = minimum.lock().unwrap();
     let mut maximum = maximum.lock().unwrap();
