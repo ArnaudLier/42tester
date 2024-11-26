@@ -35,6 +35,10 @@ test()
 		if [ "$(echo "$INSTRUCTIONS" | tr '\n' ':' | grep -o ":rb:ra" | wc -l)" != "0" ]; then
 			echo -e $RED"rb then ra instead of rr was detected"$RESET
 		fi
+		if [ "$INSTRUCTION_COUNT" -gt "$OBJECTIVE" ]; then
+			echo "$ARG" | tr '\n' ' ' >> $NUMBER_COUNT.rejected
+			echo "" >> $NUMBER_COUNT.rejected
+		fi
 		if [ "$MINIMUM" -gt "$INSTRUCTION_COUNT" ]; then
 			MINIMUM=$INSTRUCTION_COUNT
 		fi
@@ -54,7 +58,6 @@ test()
 	if [ "$MAXIMUM" -le "$OBJECTIVE" ]; then
 		echo -ne $GREEN
 	else
-		echo "$ARGS" >> rejected
 		echo -ne $RED
 	fi
 	echo -e "Objective: <= $OBJECTIVE instructions"$RESET
