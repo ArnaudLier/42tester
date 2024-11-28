@@ -119,7 +119,7 @@ fn test_batch(
     let bar = Arc::new(ProgressBar::new(test_count.get() as u64));
     bar.set_style(
         ProgressStyle::with_template(
-            "[{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg} {eta}",
+            "[{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg} {eta_precise}",
         )
         .unwrap()
         .progress_chars("##-"),
@@ -176,11 +176,11 @@ fn main() {
         checker_path = "./checker";
     }
     if !Path::new(checker_path).exists() {
-        eprintln!("{RED}{checker_path} doesn't exist.{RESET}");
+        eprintln!("{RED}{checker_path} doesn't exist in current working directory.{RESET}");
         return;
     }
     if !Path::new(PUSH_SWAP_PATH).exists() {
-        eprintln!("{RED}{PUSH_SWAP_PATH} doesn't exist.{RESET}");
+        eprintln!("{RED}{PUSH_SWAP_PATH} doesn't exist in current working directory.{RESET}");
         return;
     }
     if let Some(number_count) = args.number_count {
