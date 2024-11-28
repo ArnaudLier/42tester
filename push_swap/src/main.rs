@@ -2,6 +2,7 @@ use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
 use rand_unique::{RandomSequence, RandomSequenceBuilder};
 use std::{
+    fs::OpenOptions,
     io::{Read, Write},
     num::{NonZeroU32, NonZeroUsize},
     path::Path,
@@ -23,6 +24,7 @@ fn test(
     minimum: Arc<Mutex<u32>>,
     maximum: Arc<Mutex<u32>>,
     checker_path: &str,
+    objective: Option<u32>,
 ) {
     let mut rng = rand::thread_rng();
     let config = RandomSequenceBuilder::<u32>::rand(&mut rng);
@@ -62,15 +64,17 @@ fn test(
         .read_to_string(&mut push_swap_stderr)
         .expect("failed to read push_swap stderr");
     if push_swap_stderr == "Error\n" {
-        eprintln!("{RED}{arg} failed...{RESET}");
+        eprintln!("{RED}{arg} errored with {PUSH_SWAP_PATH}{RESET}");
     }
 
-    checker
+    if let Err(_) = checker
         .stdin
         .take()
         .expect("failed to open checker stdin")
         .write_all(push_swap_stdout.as_bytes())
-        .expect("failed to write to checker stdin");
+    {
+        eprintln!("{RED}failed to write all instructions to checker...{RESET}");
+    }
 
     let mut checker_stdout = String::new();
     let mut checker_stderr = String::new();
@@ -86,8 +90,8 @@ fn test(
         .expect("failed to open checker stderr")
         .read_to_string(&mut checker_stderr)
         .expect("failed to read checker stderr");
-    if checker_stdout == "Error\n" || checker_stdout == "KO\n" {
-        eprintln!("{RED}{arg} failed...{RESET}");
+    if checker_stdout != "OK\n" {
+        eprintln!("{RED}{arg} didn't pass checker: {checker_stdout:?}{RESET}");
     }
 
     // TODO: warn on inefficient double rotations
@@ -101,9 +105,19 @@ fn test(
     if instruction_count < *minimum {
         *minimum = instruction_count;
     }
+    if let Some(objective) = objective {
+        if instruction_count > objective {
+            let mut file = OpenOptions::new()
+                .append(true)
+                .create(true)
+                .open(&format!("{objective}.rejected"))
+                .expect("couldn't open rejected file");
+            file.write_all(format!("{arg}\n").as_bytes())
+                .expect("couldn't write rejected to file");
+        }
+    }
     push_swap.wait().unwrap();
     checker.wait().unwrap();
-    // TODO: save number lists below objective to a file
     bar.inc(1);
 }
 
@@ -132,7 +146,15 @@ fn test_batch(
         let maximum = Arc::clone(&maximum);
         let bar = Arc::clone(&bar);
         pool.execute(move || {
-            test(bar, number_count, sum, minimum, maximum, checker_path);
+            test(
+                bar,
+                number_count,
+                sum,
+                minimum,
+                maximum,
+                checker_path,
+                objective,
+            );
         });
     }
     pool.join();
