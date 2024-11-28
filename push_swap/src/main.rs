@@ -1,4 +1,5 @@
 use clap::Parser;
+use rand_unique::{RandomSequence, RandomSequenceBuilder};
 use std::{
     io::{Read, Write},
     path::Path,
@@ -6,7 +7,6 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use rand::Rng;
 use threadpool::ThreadPool;
 
 const RED: &str = "\x1B[1;31m";
@@ -14,17 +14,17 @@ const GREEN: &str = "\x1B[1;32m";
 const RESET: &str = "\x1B[0m";
 
 fn test(
-    number_count: u32,
+    number_count: usize,
     sum: Arc<Mutex<f64>>,
     minimum: Arc<Mutex<u32>>,
     maximum: Arc<Mutex<u32>>,
     checker_path: &str,
 ) {
     let mut rng = rand::thread_rng();
-    // TODO: fix duplicates
-    let arg = (0..number_count)
-        .map(|_| rng.gen_range(i32::MIN..=i32::MAX))
-        .map(|i| i.to_string())
+    let config = RandomSequenceBuilder::<u32>::rand(&mut rng);
+    let sequence: RandomSequence<u32> = config.into_iter();
+    let arg = sequence.take(number_count)
+        .map(|i| (i as i32).to_string())
         .collect::<Vec<String>>()
         .join(" ");
 
@@ -77,7 +77,7 @@ fn test(
     checker.wait().unwrap();
 }
 
-fn test_batch(test_count: u32, number_count: u32, objective: u32, checker_path: &'static str) {
+fn test_batch(test_count: u32, number_count: usize, objective: u32, checker_path: &'static str) {
     println!("Testing {number_count} random numbers {test_count} time(s)...");
     let pool = ThreadPool::new(12);
     let sum = Arc::new(Mutex::new(0.0));
