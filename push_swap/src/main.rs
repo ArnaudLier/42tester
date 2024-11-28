@@ -1,7 +1,12 @@
 use clap::Parser;
+use indicatif::{ProgressBar, ProgressStyle};
 use rand_unique::{RandomSequence, RandomSequenceBuilder};
 use std::{
-    io::{Read, Write}, num::NonZeroU32, path::Path, process::{Command, Stdio}, sync::{Arc, Mutex}
+    io::{Read, Write},
+    num::NonZeroU32,
+    path::Path,
+    process::{Command, Stdio},
+    sync::{Arc, Mutex},
 };
 
 use threadpool::ThreadPool;
@@ -12,6 +17,7 @@ const RESET: &str = "\x1B[0m";
 const PUSH_SWAP_PATH: &str = "./push_swap";
 
 fn test(
+    bar: Arc<ProgressBar>,
     number_count: usize,
     sum: Arc<Mutex<f64>>,
     minimum: Arc<Mutex<u32>>,
@@ -21,7 +27,8 @@ fn test(
     let mut rng = rand::thread_rng();
     let config = RandomSequenceBuilder::<u32>::rand(&mut rng);
     let sequence: RandomSequence<u32> = config.into_iter();
-    let arg = sequence.take(number_count)
+    let arg = sequence
+        .take(number_count)
         .map(|i| (i as i32).to_string())
         .collect::<Vec<String>>()
         .join(" ");
@@ -95,23 +102,39 @@ fn test(
     }
     push_swap.wait().unwrap();
     checker.wait().unwrap();
+    bar.inc(1);
 }
 
-fn test_batch(test_count: NonZeroU32, number_count: usize, objective: u32, checker_path: &'static str) {
+fn test_batch(
+    test_count: NonZeroU32,
+    number_count: usize,
+    objective: u32,
+    checker_path: &'static str,
+) {
     println!("Testing {number_count} random numbers {test_count} time(s)...");
     let pool = ThreadPool::new(12);
     let sum = Arc::new(Mutex::new(0.0));
     let minimum = Arc::new(Mutex::new(u32::MAX));
     let maximum = Arc::new(Mutex::new(0u32));
+    let bar = Arc::new(ProgressBar::new(test_count.get() as u64));
+    bar.set_style(
+        ProgressStyle::with_template(
+            "[{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg} {eta}",
+        )
+        .unwrap()
+        .progress_chars("##-"),
+    );
     for _ in 0..test_count.get() {
         let sum = Arc::clone(&sum);
         let minimum = Arc::clone(&minimum);
         let maximum = Arc::clone(&maximum);
+        let bar = Arc::clone(&bar);
         pool.execute(move || {
-            test(number_count, sum, minimum, maximum, checker_path);
+            test(bar, number_count, sum, minimum, maximum, checker_path);
         });
     }
     pool.join();
+    bar.finish();
 
     println!("Minimum: {} instructions", *minimum.lock().unwrap());
     println!(
