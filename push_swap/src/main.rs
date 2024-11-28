@@ -90,6 +90,7 @@ fn test(
         eprintln!("{RED}{arg} failed...{RESET}");
     }
 
+    // TODO: warn on inefficient double rotations
     let instruction_count = push_swap_stdout.lines().count() as u32;
     *sum.lock().unwrap() += f64::from(instruction_count);
     let mut minimum: std::sync::MutexGuard<'_, u32> = minimum.lock().unwrap();
@@ -102,6 +103,7 @@ fn test(
     }
     push_swap.wait().unwrap();
     checker.wait().unwrap();
+    // TODO: save number lists below objective to a file
     bar.inc(1);
 }
 
@@ -153,6 +155,53 @@ fn test_batch(
     println!();
 }
 
+fn validate_args(program_path: &str, args: &[&str], expected_stdout: &str, expected_stderr: &str) {
+    let mut program = Command::new(program_path)
+        .args(args)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect(&format!("failed to execute {program_path}"));
+
+    let mut program_stdout = String::new();
+    let mut program_stderr = String::new();
+    program
+        .stdout
+        .take()
+        .expect("failed to open program stdout")
+        .read_to_string(&mut program_stdout)
+        .expect("failed to read program stdout");
+    program
+        .stderr
+        .take()
+        .expect("failed to open program stderr")
+        .read_to_string(&mut program_stderr)
+        .expect("failed to read program stderr");
+    if program_stdout != expected_stdout {
+        eprintln!("{RED}{program_path} doesn't give expected stdout of {expected_stdout:?} (got {program_stdout:?}) with args {args:?}{RESET}")
+    }
+    if program_stderr != expected_stderr {
+        eprintln!("{RED}{program_path} doesn't give expected stderr of {expected_stderr:?} (got {program_stderr:?}) with args {args:?}{RESET}")
+    }
+}
+
+fn test_args(program_path: &str) {
+    const ERROR_OUTPUT: &str = "Error\n";
+    validate_args(program_path, &[], "", "");
+    validate_args(program_path, &["1", "1"], "", ERROR_OUTPUT);
+    validate_args(program_path, &["1", "1e"], "", ERROR_OUTPUT);
+    validate_args(program_path, &["1", "2147483648"], "", ERROR_OUTPUT);
+    validate_args(program_path, &["1", "99999999999999"], "", ERROR_OUTPUT);
+    validate_args(
+        program_path,
+        &["1", "18446744073709551564"],
+        "",
+        ERROR_OUTPUT,
+    );
+    validate_args(program_path, &["1", "-2147483649"], "", ERROR_OUTPUT);
+    validate_args(program_path, &["1", "-21474836490000"], "", ERROR_OUTPUT);
+}
+
 #[derive(Parser, Debug)]
 #[command(version, about)]
 struct Args {
@@ -193,4 +242,6 @@ fn main() {
         test_batch(test_count, 100, Some(700), checker_path);
         test_batch(test_count, 500, Some(5500), checker_path);
     }
+    test_args(PUSH_SWAP_PATH);
+    test_args(checker_path);
 }
