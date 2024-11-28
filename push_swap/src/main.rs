@@ -3,7 +3,7 @@ use indicatif::{ProgressBar, ProgressStyle};
 use rand_unique::{RandomSequence, RandomSequenceBuilder};
 use std::{
     io::{Read, Write},
-    num::NonZeroU32,
+    num::{NonZeroU32, NonZeroUsize},
     path::Path,
     process::{Command, Stdio},
     sync::{Arc, Mutex},
@@ -108,7 +108,7 @@ fn test(
 fn test_batch(
     test_count: NonZeroU32,
     number_count: usize,
-    objective: u32,
+    objective: Option<u32>,
     checker_path: &'static str,
 ) {
     println!("Testing {number_count} random numbers {test_count} time(s)...");
@@ -142,12 +142,14 @@ fn test_batch(
         *sum.lock().unwrap() / test_count.get() as f64
     );
     println!("Maximum: {} instructions", *maximum.lock().unwrap());
-    if *maximum.lock().unwrap() > objective {
-        print!("{RED}");
-    } else {
-        print!("{GREEN}");
+    if let Some(objective) = objective {
+        if *maximum.lock().unwrap() > objective {
+            print!("{RED}");
+        } else {
+            print!("{GREEN}");
+        }
+        println!("Objective: <= {} instructions{RESET}", objective);
     }
-    println!("Objective: <= {} instructions{RESET}", objective);
     println!();
 }
 
@@ -156,6 +158,8 @@ fn test_batch(
 struct Args {
     #[arg(short, long)]
     test_count: Option<NonZeroU32>,
+    #[arg(short, long)]
+    number_count: Option<NonZeroUsize>,
     #[arg(short, long)]
     use_own_checker: bool,
 }
@@ -179,10 +183,14 @@ fn main() {
         eprintln!("{RED}{PUSH_SWAP_PATH} doesn't exist.{RESET}");
         return;
     }
-    test_batch(test_count, 1, 0, checker_path);
-    test_batch(test_count, 2, 1, checker_path);
-    test_batch(test_count, 3, 3, checker_path);
-    test_batch(test_count, 5, 12, checker_path);
-    test_batch(test_count, 100, 700, checker_path);
-    test_batch(test_count, 500, 5500, checker_path);
+    if let Some(number_count) = args.number_count {
+        test_batch(test_count, number_count.get(), None, checker_path);
+    } else {
+        test_batch(test_count, 1, Some(0), checker_path);
+        test_batch(test_count, 2, Some(1), checker_path);
+        test_batch(test_count, 3, Some(3), checker_path);
+        test_batch(test_count, 5, Some(12), checker_path);
+        test_batch(test_count, 100, Some(700), checker_path);
+        test_batch(test_count, 500, Some(5500), checker_path);
+    }
 }
