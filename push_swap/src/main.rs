@@ -18,7 +18,7 @@ fn test(
     sum: Arc<Mutex<f64>>,
     minimum: Arc<Mutex<u32>>,
     maximum: Arc<Mutex<u32>>,
-    use_own_checker: bool,
+    checker_path: &str,
 ) {
     let mut rng = rand::thread_rng();
     // TODO: fix duplicates
@@ -34,11 +34,7 @@ fn test(
         .stderr(Stdio::piped())
         .spawn()
         .expect("failed to execute push_swap");
-    let mut program = "./checker_linux";
-    if use_own_checker {
-        program = "./checker";
-    }
-    let mut checker = Command::new(program)
+    let mut checker = Command::new(checker_path)
         .arg(&arg)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -81,7 +77,7 @@ fn test(
     checker.wait().unwrap();
 }
 
-fn test_batch(test_count: u32, number_count: u32, objective: u32, use_own_checker: bool) {
+fn test_batch(test_count: u32, number_count: u32, objective: u32, checker_path: &'static str) {
     println!("Testing {number_count} random numbers {test_count} time(s)...");
     let pool = ThreadPool::new(12);
     let sum = Arc::new(Mutex::new(0.0));
@@ -92,7 +88,7 @@ fn test_batch(test_count: u32, number_count: u32, objective: u32, use_own_checke
         let minimum = Arc::clone(&minimum);
         let maximum = Arc::clone(&maximum);
         pool.execute(move || {
-            test(number_count, sum, minimum, maximum, use_own_checker);
+            test(number_count, sum, minimum, maximum, checker_path);
         });
     }
     pool.join();
@@ -128,18 +124,26 @@ fn main() {
         eprintln!("Zero is not allowed");
         return;
     }
-    if !Path::new("./checker").exists() {
-        eprintln!("Checker doesn't exist");
+    let mut checker_path: &'static str = if cfg!(target_os = "linux") {
+        "./checker_linux"
+    } else {
+        "./checker_Mac"
+    };
+    if args.use_own_checker {
+        checker_path = "./checker";
+    }
+    if !Path::new(checker_path).exists() {
+        eprintln!("{checker_path} doesn't exist");
         return;
     }
     if !Path::new("./push_swap").exists() {
-        eprintln!("Push swap doesn't exist");
+        eprintln!("./push_swap doesn't exist");
         return;
     }
-    test_batch(test_count, 1, 0, args.use_own_checker);
-    test_batch(test_count, 2, 1, args.use_own_checker);
-    test_batch(test_count, 3, 3, args.use_own_checker);
-    test_batch(test_count, 5, 12, args.use_own_checker);
-    test_batch(test_count, 100, 700, args.use_own_checker);
-    test_batch(test_count, 500, 5500, args.use_own_checker);
+    test_batch(test_count, 1, 0, checker_path);
+    test_batch(test_count, 2, 1, checker_path);
+    test_batch(test_count, 3, 3, checker_path);
+    test_batch(test_count, 5, 12, checker_path);
+    test_batch(test_count, 100, 700, checker_path);
+    test_batch(test_count, 500, 5500, checker_path);
 }
