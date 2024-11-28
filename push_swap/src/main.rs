@@ -67,11 +67,12 @@ fn test(
         eprintln!("{RED}{arg} errored with {PUSH_SWAP_PATH}{RESET}");
     }
 
-    if let Err(_) = checker
+    if checker
         .stdin
         .take()
         .expect("failed to open checker stdin")
         .write_all(push_swap_stdout.as_bytes())
+        .is_err()
     {
         eprintln!("{RED}failed to write all instructions to checker...{RESET}");
     }
@@ -110,7 +111,7 @@ fn test(
             let mut file = OpenOptions::new()
                 .append(true)
                 .create(true)
-                .open(&format!("{objective}.rejected"))
+                .open(format!("{objective}.rejected"))
                 .expect("couldn't open rejected file");
             file.write_all(format!("{arg}\n").as_bytes())
                 .expect("couldn't write rejected to file");
@@ -177,9 +178,16 @@ fn test_batch(
     println!();
 }
 
-fn validate_args(program_path: &str, args: &[&str], expected_stdout: &str, expected_stderr: &str) {
+fn validate_args(
+    program_path: &str,
+    args: &[&str],
+    stdin: Option<&str>,
+    expected_stdout: &str,
+    expected_stderr: &str,
+) {
     let mut program = Command::new(program_path)
         .args(args)
+        .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
@@ -187,6 +195,14 @@ fn validate_args(program_path: &str, args: &[&str], expected_stdout: &str, expec
 
     let mut program_stdout = String::new();
     let mut program_stderr = String::new();
+    if let Some(stdin) = stdin {
+        program
+            .stdin
+            .take()
+            .expect(&format!("couldn't open {program_path} stdin"))
+            .write_all(stdin.as_bytes())
+            .expect(&format!("couldn't write to {program_path} stdin"));
+    }
     program
         .stdout
         .take()
@@ -200,28 +216,41 @@ fn validate_args(program_path: &str, args: &[&str], expected_stdout: &str, expec
         .read_to_string(&mut program_stderr)
         .expect("failed to read program stderr");
     if program_stdout != expected_stdout {
-        eprintln!("{RED}{program_path} doesn't give expected stdout of {expected_stdout:?} (got {program_stdout:?}) with args {args:?}{RESET}")
+        eprintln!("{RED}{program_path} doesn't give expected stdout of {expected_stdout:?} (got {program_stdout:?}) with args {args:?} and stdin of {stdin:?}{RESET}")
     }
     if program_stderr != expected_stderr {
-        eprintln!("{RED}{program_path} doesn't give expected stderr of {expected_stderr:?} (got {program_stderr:?}) with args {args:?}{RESET}")
+        eprintln!("{RED}{program_path} doesn't give expected stderr of {expected_stderr:?} (got {program_stderr:?}) with args {args:?} and stdin of {stdin:?}{RESET}")
     }
 }
 
+const ERROR_OUTPUT: &str = "Error\n";
 fn test_args(program_path: &str) {
-    const ERROR_OUTPUT: &str = "Error\n";
-    validate_args(program_path, &[], "", "");
-    validate_args(program_path, &["1", "1"], "", ERROR_OUTPUT);
-    validate_args(program_path, &["1", "1e"], "", ERROR_OUTPUT);
-    validate_args(program_path, &["1", "2147483648"], "", ERROR_OUTPUT);
-    validate_args(program_path, &["1", "99999999999999"], "", ERROR_OUTPUT);
+    validate_args(program_path, &[], None, "", "");
+    validate_args(program_path, &["1", "1"], None, "", ERROR_OUTPUT);
+    validate_args(program_path, &["1", "1e"], None, "", ERROR_OUTPUT);
+    validate_args(program_path, &["1", "2147483648"], None, "", ERROR_OUTPUT);
     validate_args(
         program_path,
-        &["1", "18446744073709551564"],
+        &["1", "99999999999999"],
+        None,
         "",
         ERROR_OUTPUT,
     );
-    validate_args(program_path, &["1", "-2147483649"], "", ERROR_OUTPUT);
-    validate_args(program_path, &["1", "-21474836490000"], "", ERROR_OUTPUT);
+    validate_args(
+        program_path,
+        &["1", "18446744073709551564"],
+        None,
+        "",
+        ERROR_OUTPUT,
+    );
+    validate_args(program_path, &["1", "-2147483649"], None, "", ERROR_OUTPUT);
+    validate_args(
+        program_path,
+        &["1", "-21474836490000"],
+        None,
+        "",
+        ERROR_OUTPUT,
+    );
 }
 
 #[derive(Parser, Debug)]
@@ -266,4 +295,6 @@ fn main() {
     }
     test_args(PUSH_SWAP_PATH);
     test_args(checker_path);
+    validate_args(checker_path, &["2", "1"], Some("sa"), "", ERROR_OUTPUT);
+    validate_args(checker_path, &["2", "1"], Some("rr\n"), "OK\n", "");
 }
