@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-make re BUFFER_SIZE=1
-./mandatory
-./bonus
-make re BUFFER_SIZE=10
-./mandatory
-./bonus
-make re BUFFER_SIZE=1000000
-./mandatory
-./bonus
+test() {
+	echo "BUFFER_SIZE = $1"
+	make -s re BUFFER_SIZE=$1
+	diff <(./mandatory <input.txt) expected_output
+	diff <(./bonus <input.txt) expected_output_bonus
+}
+
+test 1
+test 10
+test 1000000 

@@ -1,3 +1,9 @@
 {
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"[c]": {
+		"editor.formatOnSave": false
+	},
+	"files.associations": {
+		"*.h": "c"
+	}
 }

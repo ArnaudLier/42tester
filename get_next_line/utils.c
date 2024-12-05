@@ -6,7 +6,7 @@
 /*   By: alier <alier@student.42mulhouse.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:38:01 by alier             #+#    #+#             */
-/*   Updated: 2024/11/07 16:16:56 by alier            ###   ########.fr       */
+/*   Updated: 2024/12/05 10:54:00 by alier            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 bool	malloc_failure = false;
 
+#ifdef BUFFER_SIZE
 ssize_t read(int fd, void *buf, size_t count)
 {
 	ssize_t (*libc_read)(int, void *, size_t);
@@ -31,6 +32,7 @@ ssize_t read(int fd, void *buf, size_t count)
 	}
 	return (libc_read(fd, buf, count));
 }
+#endif
 
 void *malloc(size_t size)
 {
@@ -41,4 +43,3 @@ void *malloc(size_t size)
 	libc_malloc = dlsym(RTLD_NEXT, "malloc");
 	return (libc_malloc(size));
 }
-
