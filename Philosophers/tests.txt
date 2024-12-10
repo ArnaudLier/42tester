@@ -1,2 +1,9 @@
-2 810 200 200 2
-1 800 200 200 # the philosopher must take a fork and die
+2 810 200 200 2 # no one should die
+1 800 200 200 # the philosopher must take a fork, not eat and die
+3 400 200 200 # one should die and execution stop
+5 800 200 200 # no philosopher should die.
+5 800 200 200 7 # no one should die and stop after 7 meals
+4 410 200 200 # no philosopher should die
+4 310 200 100 # one philosopher should die.
+64 800 200 200 # no philosopher should die
+200 800 200 200 # no philosopher should die
