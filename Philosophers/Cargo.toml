@@ -1,0 +1,14 @@
+[package]
+name = "philosophers_tester"
+version = "0.1.0"
+authors = ["Arnaud Lier <arnaud@lier.link>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.5.21", features = ["derive"] }
+indicatif = "0.17.9"
+rand = "0.8.5"
+rand-unique = "0.2.2"
+threadpool = "1.8.1"
