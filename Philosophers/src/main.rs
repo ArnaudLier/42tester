@@ -50,21 +50,31 @@ fn test(
     philo
         .stdout
         .take()
-        .expect("failed to open push_swap stdout")
+        .expect("failed to open philo stdout")
         .read_to_string(&mut philo_stdout)
-        .expect("failed to read push_swap stdout");
+        .expect("failed to read philo stdout");
     philo
         .stderr
         .take()
-        .expect("failed to open push_swap stderr")
+        .expect("failed to open philo stderr")
         .read_to_string(&mut philo_stderr)
-        .expect("failed to read push_swap stderr");
+        .expect("failed to read philo stderr");
     philo.wait().unwrap();
-    let dies = philo_stdout.contains("died") || philo_stdout.contains("die");
+    let mut dead = false;
+    for line in philo_stdout.lines() {
+        if dead {
+            eprintln!("{philo_stdout:?}\n");
+            (*failed.lock().unwrap()).push(FailedExpectation::MessageAfterDeath);
+        } else if line.contains("died") || line.contains("die") {
+            dead = true;
+        }
+    }
     if !philo_stderr.is_empty() {
         eprintln!("{RED}received something in stderr from {PHILO_PATH}{RESET}");
     }
-    if dies && !expectations.should_die || !dies && expectations.should_die {
+    if dead && !expectations.should_die {
+        (*failed.lock().unwrap()).push(FailedExpectation::ShouldNotDie);
+    } else if !dead && expectations.should_die {
         (*failed.lock().unwrap()).push(FailedExpectation::ShouldDie);
     }
 
@@ -74,6 +84,8 @@ fn test(
 #[derive(Debug)]
 enum FailedExpectation {
     ShouldDie,
+    ShouldNotDie,
+    MessageAfterDeath,
 }
 
 fn test_batch(
@@ -150,7 +162,7 @@ fn main() {
         return;
     }
     let tests = vec![
-        /*(
+        (
             PhilosopherConfig {
                 philosopher_count: 2,
                 time_to_die: 810,
@@ -209,7 +221,7 @@ fn main() {
                 stop_at_meals: Some(7),
             },
             PhilosopherExpectations { should_die: false },
-        ),*/
+        ),
         (
             PhilosopherConfig {
                 philosopher_count: 5,
