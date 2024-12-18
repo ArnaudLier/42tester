@@ -68,7 +68,7 @@ fn test(
         if dead {
             eprintln!("{philo_stdout:?}\n");
             (*failed.lock().unwrap()).push(FailedExpectation::MessageAfterDeath);
-        } else if line.contains("died") || line.contains("die") {
+        } else if line.contains("dead") || line.contains("die") {
             dead = true;
         }
         if line.contains("eat") {
