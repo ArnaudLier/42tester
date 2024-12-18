@@ -14,8 +14,10 @@ const RED: &str = "\x1B[1;31m";
 const GREEN: &str = "\x1B[1;32m";
 const RESET: &str = "\x1B[0m";
 const PHILO_PATH: &str = "./philo";
+const PHILO_BONUS_PATH: &str = "./philo_bonus";
 
 fn test(
+    philo_path: &str,
     bar: Arc<ProgressBar>,
     config: PhilosopherConfig,
     expectations: PhilosopherExpectations,
@@ -38,7 +40,7 @@ fn test(
         ]
     };
 
-    let mut philo: std::process::Child = Command::new(PHILO_PATH)
+    let mut philo: std::process::Child = Command::new(philo_path)
         .args(args)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -100,6 +102,7 @@ enum FailedExpectation {
 }
 
 fn test_batch(
+    philo_path: &'static str,
     concurrency: NonZeroU8,
     test_count: NonZeroU32,
     config: PhilosopherConfig,
@@ -124,7 +127,7 @@ fn test_batch(
         let config = config.clone();
         let expectations = expectations.clone();
         pool.execute(move || {
-            test(bar, config, expectations, failed_expectations);
+            test(philo_path, bar, config, expectations, failed_expectations);
         });
     }
     pool.join();
@@ -168,9 +171,15 @@ fn main() {
     let test_count = args.test_count.unwrap_or(100.try_into().unwrap());
     let concurrency = args.concurrency.unwrap_or(10.try_into().unwrap());
 
-    if !Path::new(PHILO_PATH).exists() {
-        eprintln!("{RED}{PHILO_PATH} doesn't exist in current working directory.{RESET}");
-        return;
+    let mut path = PHILO_PATH;
+    if !Path::new(path).exists() {
+        path = PHILO_BONUS_PATH;
+        if !Path::new(path).exists() {
+            eprintln!(
+                "{RED}{PHILO_PATH} and {PHILO_BONUS_PATH} don't exist in current working directory.{RESET}"
+            );
+            return;
+        }
     }
     let tests = vec![
         // Evaluation Sheet
@@ -278,6 +287,6 @@ fn main() {
     ];
 
     for test in tests {
-        test_batch(concurrency, test_count, test.0, test.1);
+        test_batch(path, concurrency, test_count, test.0, test.1);
     }
 }
