@@ -76,7 +76,7 @@ fn test(
         }
     }
     if !philo_stderr.is_empty() {
-        eprintln!("{RED}received something in stderr from {PHILO_PATH}{RESET}");
+        eprintln!("{RED}received something in stderr from {philo_path}{RESET}");
     }
     if let Some(min_meal_count) = config.stop_at_meals {
         if meal_count < min_meal_count * config.philosopher_count as u32 {
