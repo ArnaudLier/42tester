@@ -61,6 +61,7 @@ fn test(
         .expect("failed to read philo stderr");
     philo.wait().unwrap();
     let mut dead = false;
+    let mut meal_count: u32 = 0;
     for line in philo_stdout.lines() {
         if dead {
             eprintln!("{philo_stdout:?}\n");
@@ -68,9 +69,17 @@ fn test(
         } else if line.contains("died") || line.contains("die") {
             dead = true;
         }
+        if line.contains("eat") {
+            meal_count = meal_count + 1;
+        }
     }
     if !philo_stderr.is_empty() {
         eprintln!("{RED}received something in stderr from {PHILO_PATH}{RESET}");
+    }
+    if let Some(min_meal_count) = config.stop_at_meals {
+        if meal_count < min_meal_count * config.philosopher_count as u32 {
+            (*failed.lock().unwrap()).push(FailedExpectation::NotEnoughMeals(meal_count));
+        }
     }
     if dead && !expectations.should_die {
         (*failed.lock().unwrap()).push(FailedExpectation::ShouldNotDie);
@@ -82,10 +91,12 @@ fn test(
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 enum FailedExpectation {
     ShouldDie,
     ShouldNotDie,
     MessageAfterDeath,
+    NotEnoughMeals(u32),
 }
 
 fn test_batch(
@@ -162,6 +173,58 @@ fn main() {
         return;
     }
     let tests = vec![
+        // Evaluation Sheet
+        (
+            PhilosopherConfig {
+                philosopher_count: 1,
+                time_to_die: 800,
+                time_to_eat: 200,
+                time_to_sleep: 200,
+                stop_at_meals: None,
+            },
+            PhilosopherExpectations { should_die: true },
+        ),
+        (
+            PhilosopherConfig {
+                philosopher_count: 5,
+                time_to_die: 800,
+                time_to_eat: 200,
+                time_to_sleep: 200,
+                stop_at_meals: Some(30),
+            },
+            PhilosopherExpectations { should_die: false },
+        ),
+        (
+            PhilosopherConfig {
+                philosopher_count: 5,
+                time_to_die: 800,
+                time_to_eat: 200,
+                time_to_sleep: 200,
+                stop_at_meals: Some(7),
+            },
+            PhilosopherExpectations { should_die: false },
+        ),
+        (
+            PhilosopherConfig {
+                philosopher_count: 4,
+                time_to_die: 410,
+                time_to_eat: 200,
+                time_to_sleep: 200,
+                stop_at_meals: Some(30),
+            },
+            PhilosopherExpectations { should_die: false },
+        ),
+        (
+            PhilosopherConfig {
+                philosopher_count: 4,
+                time_to_die: 310,
+                time_to_eat: 200,
+                time_to_sleep: 100,
+                stop_at_meals: None,
+            },
+            PhilosopherExpectations { should_die: true },
+        ),
+        // Others
         (
             PhilosopherConfig {
                 philosopher_count: 2,
@@ -194,26 +257,6 @@ fn main() {
         ),
         (
             PhilosopherConfig {
-                philosopher_count: 5,
-                time_to_die: 800,
-                time_to_eat: 200,
-                time_to_sleep: 200,
-                stop_at_meals: Some(7),
-            },
-            PhilosopherExpectations { should_die: false },
-        ),
-        (
-            PhilosopherConfig {
-                philosopher_count: 4,
-                time_to_die: 410,
-                time_to_eat: 200,
-                time_to_sleep: 200,
-                stop_at_meals: Some(7),
-            },
-            PhilosopherExpectations { should_die: false },
-        ),
-        (
-            PhilosopherConfig {
                 philosopher_count: 200,
                 time_to_die: 800,
                 time_to_eat: 200,
@@ -225,9 +268,9 @@ fn main() {
         (
             PhilosopherConfig {
                 philosopher_count: 5,
-                time_to_die: 20,
-                time_to_eat: 1,
-                time_to_sleep: 1,
+                time_to_die: 300,
+                time_to_eat: 60,
+                time_to_sleep: 60,
                 stop_at_meals: Some(100),
             },
             PhilosopherExpectations { should_die: false },
