@@ -1,0 +1,68 @@
+{
+	<dl_open>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:_dl_open
+	...
+}
+{
+	<dlopen>
+	Memcheck:Leak
+	match-leak-kinds: definite
+	...
+	fun:dlopen@@GLIBC_2.34
+}
+{
+	<mlx_init>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:mlx_init
+	...
+}
+{
+	<_dl_catch_exception>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:_dl_catch_exception
+	...
+}
+{
+	<glfwInit>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:glfwInit
+	...
+}
+{
+	<x11>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/libX11.so.*
+}
+{
+	<radeon_rsi>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/radeonrsi_dri.so
+}
+{
+	<libLLVM-15>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/libLLVM-15.so*
+}
+{
+	<__pthread_once_slow>
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:__pthread_once_slow
+	...
+}
