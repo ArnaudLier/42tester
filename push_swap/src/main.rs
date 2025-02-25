@@ -218,10 +218,14 @@ fn validate_args(
         .expect("failed to read program stderr");
     program.wait().unwrap();
     if program_stdout != expected_stdout {
-        eprintln!("{RED}{program_path} doesn't give expected stdout of {expected_stdout:?} (got {program_stdout:?}) with args {args:?} and stdin of {stdin:?}{RESET}")
+        eprintln!(
+            "{RED}{program_path} doesn't give expected stdout of {expected_stdout:?} (got {program_stdout:?}) with args {args:?} and stdin of {stdin:?}{RESET}"
+        )
     }
     if program_stderr != expected_stderr {
-        eprintln!("{RED}{program_path} doesn't give expected stderr of {expected_stderr:?} (got {program_stderr:?}) with args {args:?} and stdin of {stdin:?}{RESET}")
+        eprintln!(
+            "{RED}{program_path} doesn't give expected stderr of {expected_stderr:?} (got {program_stderr:?}) with args {args:?} and stdin of {stdin:?}{RESET}"
+        )
     }
 }
 
