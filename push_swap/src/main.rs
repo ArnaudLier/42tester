@@ -192,7 +192,7 @@ fn validate_args(
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
-        .expect(&format!("failed to execute {program_path}"));
+        .unwrap_or_else(|_| panic!("failed to execute {program_path}"));
 
     let mut program_stdout = String::new();
     let mut program_stderr = String::new();
@@ -200,9 +200,9 @@ fn validate_args(
         program
             .stdin
             .take()
-            .expect(&format!("couldn't open {program_path} stdin"))
+            .unwrap_or_else(|| panic!("couldn't open {program_path} stdin"))
             .write_all(stdin.as_bytes())
-            .expect(&format!("couldn't write to {program_path} stdin"));
+            .unwrap_or_else(|_| panic!("couldn't write to {program_path} stdin"));
     }
     program
         .stdout
@@ -216,6 +216,7 @@ fn validate_args(
         .expect("failed to open program stderr")
         .read_to_string(&mut program_stderr)
         .expect("failed to read program stderr");
+    program.wait().unwrap();
     if program_stdout != expected_stdout {
         eprintln!("{RED}{program_path} doesn't give expected stdout of {expected_stdout:?} (got {program_stdout:?}) with args {args:?} and stdin of {stdin:?}{RESET}")
     }
