@@ -29,20 +29,21 @@ fn test(
     let mut rng = rand::thread_rng();
     let config = RandomSequenceBuilder::<u32>::rand(&mut rng);
     let sequence: RandomSequence<u32> = config.into_iter();
-    let arg = sequence
+    // Only test separate arguments because that's what the subject requires.
+    let args = sequence
         .take(number_count)
         .map(|i| (i as i32).to_string())
-        .collect::<Vec<String>>()
-        .join(" ");
+        .collect::<Vec<String>>();
+    let joined_args = args.join(" ");
 
     let mut push_swap: std::process::Child = Command::new(PUSH_SWAP_PATH)
-        .arg(&arg)
+        .args(&args)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .expect("failed to execute push_swap");
     let mut checker = Command::new(checker_path)
-        .arg(&arg)
+        .args(&args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -64,7 +65,7 @@ fn test(
         .read_to_string(&mut push_swap_stderr)
         .expect("failed to read push_swap stderr");
     if push_swap_stderr == "Error\n" {
-        eprintln!("{RED}{arg} errored with {PUSH_SWAP_PATH}{RESET}");
+        eprintln!("{RED}{joined_args} errored with {PUSH_SWAP_PATH}{RESET}");
     }
 
     if checker
@@ -92,7 +93,7 @@ fn test(
         .read_to_string(&mut checker_stderr)
         .expect("failed to read checker stderr");
     if checker_stdout != "OK\n" {
-        eprintln!("{RED}{arg} didn't pass checker: {checker_stdout:?}{RESET}");
+        eprintln!("{RED}{joined_args} didn't pass checker: {checker_stdout:?}{RESET}");
     }
 
     // TODO: warn on inefficient double rotations
@@ -113,7 +114,7 @@ fn test(
                 .create(true)
                 .open(format!("{objective}.rejected"))
                 .expect("couldn't open rejected file");
-            file.write_all(format!("{arg}\n").as_bytes())
+            file.write_all(format!("{joined_args}\n").as_bytes())
                 .expect("couldn't write rejected to file");
         }
     }
