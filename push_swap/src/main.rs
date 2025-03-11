@@ -118,7 +118,13 @@ fn test(
                 .expect("couldn't write rejected to file");
         }
     }
-    push_swap.wait().unwrap();
+    let exit_status = push_swap.wait().unwrap();
+    if !exit_status.success() {
+        eprintln!(
+            "{RED}{PUSH_SWAP_PATH} didn't exit successfully: {}{RESET}",
+            exit_status
+        );
+    }
     checker.wait().unwrap();
     bar.inc(1);
 }
@@ -235,6 +241,7 @@ fn test_args(program_path: &str) {
     validate_args(program_path, &["1", "1"], None, "", ERROR_OUTPUT);
     validate_args(program_path, &["1", "1e"], None, "", ERROR_OUTPUT);
     validate_args(program_path, &["1", "2147483648"], None, "", ERROR_OUTPUT);
+    validate_args(program_path, &[""], None, "", ERROR_OUTPUT);
     validate_args(
         program_path,
         &["1", "99999999999999"],
