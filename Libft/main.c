@@ -689,22 +689,26 @@ void	test_split(void)
 			exit(EXIT_FAILURE);
 		}
 		j = 0;
-		while (test_cases[i].expected[j])
+		while (result[j])
 		{
-			if (result[j] == NULL)
+			if (test_cases[i].expected[j] == NULL)
 			{
-				fprintf(stderr, "TC%zu: unexpected NULL at position %zu\n", i, j);
+				fprintf(stderr, "TC%zu: unexpected word at position %zu\n", i, j);
 				exit(EXIT_FAILURE);
 			}
 			comparison = strcmp(result[j], test_cases[i].expected[j]);
 			if (comparison)
 			{
-				fprintf(stderr, "TC%zu: unexpected comparison result: %d\n", i, comparison);
+				fprintf(stderr, "TC%zu: unexpected comparison result %zu: %d\n", i, j, comparison);
 				fprintf(stderr, "got \"%s\" instead of \"%s\"\n", result[j], test_cases[i].expected[j]);
 				exit(EXIT_FAILURE);
 			}
 			free(result[j]);
 			j++;
+		}
+		if (test_cases[i].expected[j]) {
+			fprintf(stderr, "TC%zu: unexpected NULL at position %zu\n", i, j);
+			exit(EXIT_FAILURE);
 		}
 		free(result);
 		i++;
